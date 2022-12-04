@@ -11,8 +11,8 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject fCam;
     void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
