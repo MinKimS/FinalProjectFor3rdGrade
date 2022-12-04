@@ -8,7 +8,7 @@ public class RemoveBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Bullet")
+        if(collision.collider.tag == "Bullet" || collision.collider.tag == "EnemyBullet")
         {
             ShowEffect(collision);
             Destroy(collision.gameObject);

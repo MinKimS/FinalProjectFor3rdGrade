@@ -39,7 +39,8 @@ public class EnemyAI : MonoBehaviour
     WaitForSeconds ws;
     //이동제어 클래스
     MoveAgent moveAgent;
-
+    //총발사제어 클래스
+    EnemyFire enemyFire;
 
     private void Awake()
     {
@@ -55,6 +56,8 @@ public class EnemyAI : MonoBehaviour
         enemyTr = GetComponent<Transform>();
         //이동제어 클래스 추출
         moveAgent = GetComponent<MoveAgent>();
+        //총발사제어 클래스 추출
+        enemyFire = GetComponent<EnemyFire>();
         ws = new WaitForSeconds(0.3f);
     }
 
@@ -99,21 +102,39 @@ public class EnemyAI : MonoBehaviour
             switch (state)
             {
                 case State.PATROL:
+                    if(range == Range.LONG) enemyFire.isFire = false;
                     moveAgent.SetPatrolling(true);
                     break;
                 case State.TRACE:
+                    if (range == Range.LONG) enemyFire.isFire = false;
                     moveAgent.SetTraceTarget(playerTr.position);
                     break;
                 case State.ATTACK:
                     if(range == Range.LONG)
                     {
+                        //멈춘 상태로 총알 발사
+                        if (enemyFire.isFire == false)
+                            enemyFire.isFire = true;
                         moveAgent.Stop();
                     }
                     break;
                 case State.DIE:
+                    isDie = true;
+                    if (range == Range.LONG) enemyFire.isFire = false;
                     moveAgent.Stop();
+                    GetComponent<CapsuleCollider>().enabled = false;
                     break;
             }
+        }
+    }
+
+    public void OnPlayerDie()
+    {
+        if(isDie == false)
+        {
+            moveAgent.Stop();
+            if (range == Range.LONG) enemyFire.isFire = false;
+            StopAllCoroutines();
         }
     }
 }

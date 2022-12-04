@@ -35,6 +35,8 @@ public class MoveAgent : MonoBehaviour
     }
     void Start()
     {
+        patrolSpeed += Random.Range(0.5f, 1.0f);
+        traceSpeed += Random.Range(0.5f, 1.0f);
         nma = GetComponent<NavMeshAgent>();
         nma.speed = patrolSpeed;
 
@@ -43,6 +45,7 @@ public class MoveAgent : MonoBehaviour
         {
             group.GetComponentsInChildren<Transform>(wayPoints);
             wayPoints.RemoveAt(0);
+            nextIdx = Random.Range(0, wayPoints.Count); //다음 목적지인덱스 랜덤설정
         }
         SetPatrolling(true);
     }

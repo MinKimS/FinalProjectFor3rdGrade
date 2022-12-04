@@ -9,11 +9,11 @@ public class FireCtrl : MonoBehaviour
     public Transform firePos;
     public AudioClip fireSound;
 
-    ParticleSystem muzzleFlash;
+    ParticleSystem fireEffect;
     AudioSource _audio;
     void Start()
     {
-        muzzleFlash = firePos.GetComponentInChildren<ParticleSystem>();
+        fireEffect = firePos.GetComponentInChildren<ParticleSystem>();
         _audio = GetComponent<AudioSource>();
     }
 
@@ -28,7 +28,7 @@ public class FireCtrl : MonoBehaviour
     {
         Instantiate(bullet, firePos.position, firePos.rotation);
         cartridge.Play();
-        muzzleFlash.Play();
+        fireEffect.Play();
         _audio.PlayOneShot(fireSound, 1.0f);
     }
 }
