@@ -23,12 +23,14 @@ public class MoveAgent : MonoBehaviour
     {
         patrolling = patrol;
         nma.speed = patrolSpeed;
+        nma.angularSpeed = 120;
         MoveWayPoint();
     }
     public void SetTraceTarget(Vector3 pos)
     {
         traceTarget = pos;
         nma.speed = traceSpeed;
+        nma.angularSpeed = 360;
         Tracetarget(traceTarget);
     }
     void Start()

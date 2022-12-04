@@ -17,8 +17,14 @@ public class EnemyAI : MonoBehaviour
         PTA,
         TA
     }
+    public enum Range
+    {
+        LONG,
+        CLOSE
+    }
     public Type type;
     public State state;
+    public Range range;
     //공격 사정거리
     public float attackDist = 1.0f;
     //추적 사정거리
@@ -99,7 +105,10 @@ public class EnemyAI : MonoBehaviour
                     moveAgent.SetTraceTarget(playerTr.position);
                     break;
                 case State.ATTACK:
-                    moveAgent.Stop();
+                    if(range == Range.LONG)
+                    {
+                        moveAgent.Stop();
+                    }
                     break;
                 case State.DIE:
                     moveAgent.Stop();

@@ -11,8 +11,8 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject fCam;
     void Start()
     {
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -25,7 +25,7 @@ public class PlayerCtrl : MonoBehaviour
 
         float len = moveSpeed * Time.deltaTime;
         transform.Translate(dir * len);
-        //transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
+        transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
 
         CameraConvert();
     }
