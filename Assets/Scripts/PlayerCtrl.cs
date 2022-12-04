@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
+    public enum Camera
+    {
+        TPS,
+        FPS
+    }
     public float moveSpeed = 2.0f;
     Vector3 dir;
     public float rotSpeed = 50.0f;
     public GameObject tCam;
     public GameObject fCam;
+    Camera cam = Camera.TPS;
     void Start()
     {
         Cursor.visible = false;
@@ -32,8 +38,19 @@ public class PlayerCtrl : MonoBehaviour
 
     void CameraConvert()
     {
-        if (Input.GetKeyDown("1")) TPSCamera();
-        if (Input.GetKeyDown("2")) FPSCamera();
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (cam == Camera.TPS)
+            {
+                FPSCamera();
+                cam = Camera.FPS;
+            }
+            else
+            {
+                TPSCamera();
+                cam = Camera.TPS;
+            }
+        }
     }
 
     void TPSCamera()
