@@ -123,6 +123,7 @@ public class EnemyAI : MonoBehaviour
                     if (range == Range.LONG) enemyFire.isFire = false;
                     moveAgent.Stop();
                     GetComponent<CapsuleCollider>().enabled = false;
+                    gameObject.tag = "Untagged";
                     break;
             }
         }

@@ -17,8 +17,8 @@ public class PlayerCtrl : MonoBehaviour
     Camera cam = Camera.TPS;
     void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()

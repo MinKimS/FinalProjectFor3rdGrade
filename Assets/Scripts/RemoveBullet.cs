@@ -12,6 +12,7 @@ public class RemoveBullet : MonoBehaviour
         {
             ShowEffect(collision);
             Destroy(collision.gameObject);
+            //collision.gameObject.SetActive(false);
         }
     }
     void ShowEffect(Collision coll)

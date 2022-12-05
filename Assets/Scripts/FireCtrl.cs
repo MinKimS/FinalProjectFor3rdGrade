@@ -26,6 +26,7 @@ public class FireCtrl : MonoBehaviour
     }
     void Fire()
     {
+
         Instantiate(bullet, firePos.position, firePos.rotation);
         cartridge.Play();
         fireEffect.Play();
