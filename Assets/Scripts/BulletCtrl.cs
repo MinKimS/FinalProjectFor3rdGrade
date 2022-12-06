@@ -15,4 +15,16 @@ public class BulletCtrl : MonoBehaviour
     {
         
     }
+
+    //총알 정지
+    void BulletStop()
+    {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
+
+    //총알 다시 움직임
+    void BulletGo()
+    {
+        GetComponent<Rigidbody>().AddForce(transform.forward * speed);
+    }
 }

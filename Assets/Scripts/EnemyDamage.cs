@@ -12,15 +12,21 @@ public class EnemyDamage : MonoBehaviour
     public Vector3 hpBarOffset = new Vector3(0, 0.6f, 0);
     private Canvas uiCanvas;
     private Image hpBarImage;
+    GameManager gm;
 
     void Start()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         c = gameObject.GetComponentInChildren<Renderer>();
         curColor = c.material.color;
         SetHpBar();
     }
     void SetHpBar()
     {
+        //hp설정
+        hp = gm.enMaxHP;
+
+        //hp ui 설정
         uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
         GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
         hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
@@ -39,8 +45,9 @@ public class EnemyDamage : MonoBehaviour
             BulletCtrl bc = other.gameObject.GetComponent<BulletCtrl>();
             if (bc != null)
             {
-                hp -= bc.damage;
-                hpBarImage.fillAmount = hp / 100.0f;
+                //데미지
+                hp -= gm.atkP*(1-gm.defE);
+                hpBarImage.fillAmount = hp / gm.enMaxHP;    //적 hp ui에 반영
             }
 
             if (hp <= 0.0f)
