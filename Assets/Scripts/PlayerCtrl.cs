@@ -42,25 +42,28 @@ public class PlayerCtrl : MonoBehaviour
 
     void Update()
     {
-        //플레이어 이동
-        dir.x = Input.GetAxis("Horizontal");
-        dir.z = Input.GetAxis("Vertical");
-        float r = Input.GetAxis("Mouse X");
-
-        if (dir.magnitude > 1) dir.Normalize();
-
-        float len = moveSpeed * Time.deltaTime;
-        transform.Translate(dir * len);
-        transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
-
-        CameraConvert();    //카메라 전환
-
         //state 설정
-        SetState();
+        SetWeapon();
+
+        //플레이어 이동
+        if (!gm.isEnter)
+        {
+            dir.x = Input.GetAxis("Horizontal");
+            dir.z = Input.GetAxis("Vertical");
+            float r = Input.GetAxis("Mouse X");
+
+            if (dir.magnitude > 1) dir.Normalize();
+
+            float len = moveSpeed * Time.deltaTime;
+            transform.Translate(dir * len);
+            transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
+
+            CameraConvert();    //카메라 전환
+        }
     }
 
-    //state 설정 함수
-    void SetState()
+    //무기설정
+    void SetWeapon()
     {
         //무기 바꾸기
         weapons[wpIdx].SetActive(false);

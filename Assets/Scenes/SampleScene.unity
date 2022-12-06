@@ -695,9 +695,9 @@ MonoBehaviour:
   maxEnemy: 10
   isGameOver: 0
   atkP: 1
-  defP: 0
+  defP: 0.1
   atkE: 1
-  defE: 0
+  defE: 0.1
   weapon: 0
   enMax: 4
   pMaxHP: 100
