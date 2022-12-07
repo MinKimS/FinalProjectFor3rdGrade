@@ -46,7 +46,7 @@ public class PlayerCtrl : MonoBehaviour
         SetWeapon();
 
         //플레이어 이동
-        if (!gm.isEnter)
+        if (!gm.isEnter && !gm.isGameOver)
         {
             dir.x = Input.GetAxis("Horizontal");
             dir.z = Input.GetAxis("Vertical");

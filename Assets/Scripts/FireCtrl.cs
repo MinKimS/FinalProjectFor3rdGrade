@@ -27,7 +27,7 @@ public class FireCtrl : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !gm.isEnter)
+        if (Input.GetMouseButtonDown(0) && !gm.isEnter && !gm.isGameOver)
         {
             //ÀåÅº¼ö 0ÀÌ¸é ÃÑ¹ß»ç ºÒ°¡
             if(!isFire && bulletNum > 0)

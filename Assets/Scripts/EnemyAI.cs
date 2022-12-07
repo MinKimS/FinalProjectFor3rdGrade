@@ -42,8 +42,15 @@ public class EnemyAI : MonoBehaviour
     //총발사제어 클래스
     EnemyFire enemyFire;
 
+    GameManager gm;
+
+    public ParticleSystem dieEffect; //죽음 이펙트
+
     private void Awake()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        //소환시 어떻게할지 설정
         if (type == Type.TA) state = State.TRACE;
         else state = State.PATROL;
 
@@ -66,6 +73,7 @@ public class EnemyAI : MonoBehaviour
         StartCoroutine(CheckState());
         StartCoroutine(Action());
     }
+
 
     IEnumerator CheckState()
     {
@@ -120,18 +128,30 @@ public class EnemyAI : MonoBehaviour
                     break;
                 case State.DIE:
                     isDie = true;
+                    gm.enemyCount--;
                     if (range == Range.LONG) enemyFire.isFire = false;
                     moveAgent.Stop();
+                    dieEffect.Play();
                     GetComponent<CapsuleCollider>().enabled = false;
                     gameObject.tag = "Untagged";
+                    //적 처치 수 증가
+                    gm.killNum++;
+                    //플레이어 돈 증가
+                    gm.money += 5;
+                    Invoke("DieColor", 1.0f);
                     break;
             }
         }
     }
+    
+    void DieColor()
+    {
+        Destroy(this.gameObject);
+    }
 
     public void OnPlayerDie()
     {
-        if(isDie == false)
+        if(!isDie)
         {
             moveAgent.Stop();
             if (range == Range.LONG) enemyFire.isFire = false;

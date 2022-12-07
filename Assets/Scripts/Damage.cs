@@ -37,7 +37,7 @@ public class Damage : MonoBehaviour
 			if(other.tag == "EnemyBullet") Destroy(other.gameObject);
 			//데미지
 			curHp -= gm.atkE*(1-gm.defP);
-			Debug.Log("Player HP = " + curHp.ToString());
+			//Debug.Log("Player HP = " + curHp.ToString());
 			//플레이어 사망
 			if (curHp <= 0.0f)
 			{
@@ -52,11 +52,16 @@ public class Damage : MonoBehaviour
 
 	void PlayerDie()
 	{
+		//GameOver처리하기
+		gm.isGameOver = true;
+		//플레이어 사망시 적 AI 멈추기
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 		for (int i = 0; i < enemies.Length; i++)
 		{
 			enemies[i].SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
 		}
+		//게임오버창 띄우기
+		gm.gmOverUI.SetActive(true);
 	}
 
 	IEnumerator ShowBloodScreen()

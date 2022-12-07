@@ -31,7 +31,8 @@ public class EnemyFire : MonoBehaviour
             if (Time.time >= nextFire)
             {
                 Fire();
-                nextFire = Time.time + fireRate + Random.Range(0.0f, 0.5f);
+                //다음 공격
+                nextFire = Time.time + fireRate + Random.Range(0.0f, 1.0f);
             }
 
             Quaternion rot = Quaternion.LookRotation(playerTr.position - enemyTr.position);

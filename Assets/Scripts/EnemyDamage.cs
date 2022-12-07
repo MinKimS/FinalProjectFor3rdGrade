@@ -14,7 +14,7 @@ public class EnemyDamage : MonoBehaviour
     private Image hpBarImage;
     GameManager gm;
 
-    public float gDamage = 1.0f;
+    public float gDamage = 1.0f; //총 데미지
 
     void Start()
     {
@@ -22,46 +22,11 @@ public class EnemyDamage : MonoBehaviour
         c = gameObject.GetComponentInChildren<Renderer>();
         curColor = c.material.color;
         SetHpBar();
+        SetWeaponDamage();
     }
-    void SetHpBar()
+    void SetWeaponDamage()
     {
-        //hp설정
-        hp = gm.enMaxHP;
-
-        //hp ui 설정
-        uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
-        GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
-        hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
-        EnemyHpBar bar = hpBar.GetComponent<EnemyHpBar>();
-        bar.targetTr = gameObject.transform;
-        bar.offset = hpBarOffset;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Bullet")
-        {
-            c.material.color = Color.red;
-            Invoke("ColorChange", 0.5f);
-            Destroy(other.gameObject);
-            BulletCtrl bc = other.gameObject.GetComponent<BulletCtrl>();
-            if (bc != null)
-            {
-                Damage();
-            }
-
-            if (hp <= 0.0f)
-            {
-                GetComponent<EnemyAI>().state = EnemyAI.State.DIE;
-                hpBarImage.GetComponentsInParent<Image>()[1].color = Color.clear;
-            }
-        }
-    }
-
-    //적이 입는 데미지 함수
-    void Damage()
-    {
-        switch(gm.weapon)
+        switch (gm.weapon)
         {
             //권총
             case 0:
@@ -88,9 +53,42 @@ public class EnemyDamage : MonoBehaviour
                 gDamage = 5;
                 break;
         }
-        //데미지
-        hp -= (gm.atkP* gDamage) * (1 - gm.defE);
-        hpBarImage.fillAmount = hp / gm.enMaxHP;    //적 hp ui에 반영
+    }
+    void SetHpBar()
+    {
+        //hp설정
+        hp = gm.enMaxHP;
+
+        //hp ui 설정
+        uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
+        GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
+        hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
+        EnemyHpBar bar = hpBar.GetComponent<EnemyHpBar>();
+        bar.target = gameObject;
+        bar.offset = hpBarOffset;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Bullet")
+        {
+            c.material.color = Color.red;
+            Invoke("ColorChange", 0.5f);
+            Destroy(other.gameObject);
+            BulletCtrl bc = other.gameObject.GetComponent<BulletCtrl>();
+            if (bc != null)
+            {
+                //적이 입는 데미지
+                hp -= (gm.atkP * gDamage) * (1 - gm.defE);
+                hpBarImage.fillAmount = hp / gm.enMaxHP;    //적 hp ui에 반영
+            }
+
+            if (hp <= 0.0f)
+            {
+                GetComponent<EnemyAI>().state = EnemyAI.State.DIE;
+                hpBarImage.GetComponentsInParent<Image>()[1].color = Color.clear;
+            }
+        }
     }
 
     void ColorChange()

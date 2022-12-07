@@ -167,6 +167,10 @@ public class Dice : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(8.0f);
+            if (gm.isGameOver)
+            {
+                StopAllCoroutines();
+            }
             RollDice();
             switch(dType)
             {

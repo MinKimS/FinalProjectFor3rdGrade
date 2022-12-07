@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Transform[] points;
-    public GameObject enemy;
-    public float createTime = 2.0f;
-    public int maxEnemy = 10;
+    //스테이지별 소환될 적 설정을 위한 변수
+    public enum StageType
+    {
+        chess,
+        card,
+        mix
+    }
+    public StageType sType;
+    public Transform[] points; //적 스폰포인트
+    public GameObject[] enemys; //소환될 적들
+    private float createTime = 2.0f; //적 소환 딜레이 타임
+    private int limitEnemy = 5;   // 너무 많은 적이 소환되지 않도록 방지하기 위한 변수
     public bool isGameOver = false;
 
     //Player setting
@@ -24,8 +32,17 @@ public class GameManager : MonoBehaviour
 
     public bool isEnter = true; //새로운 스테이지 입장여부
     public GameObject DicePanel;
-    //public bool isRoll = false; //스테이지 진행중 돌아가는 주사위가 돌아가는지 여부
-    public bool isSpawnOk = false;
+    public bool isSpawnOk = false;  //스폰체크
+    public int enemyCount = 0;
+
+    //게임오버창
+    public GameObject gmOverUI;
+    //적 처치 수
+    public int killNum = 0;
+    //소유한 돈
+    public int money = 0;
+    //현재 스테이지
+    public int curStage = 1;
 
     void Start()
     {
@@ -36,6 +53,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        //게임이 시작하면 몹 스폰
         if(!isEnter && isSpawnOk)
         {
             isSpawnOk = false;
@@ -47,22 +65,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //적 생성
     IEnumerator CreateEnemy(float maxSpawn)
     {
         while (!isGameOver && maxSpawn > 0)
         {
-            int enemyCount = (int)GameObject.FindGameObjectsWithTag("Enemy").Length;
-            if (enemyCount < maxEnemy)
+            //최대소환 가능횟수안에서 일정시간마다 적소환
+            if (enemyCount < limitEnemy)
             {
                 yield return new WaitForSeconds(createTime);
-                int idx = Random.Range(1, points.Length);
-                Instantiate(enemy, points[idx].position, points[idx].rotation);
+                int idx = Random.Range(1, points.Length); //스폰포인트 인덱스
+                int enmIdx = 0; //적 소환 인덱스
+                //소환될 적 선택
+                switch(sType)
+                {
+                    case StageType.chess:
+                        enmIdx = Random.Range(0, 3);
+                        break;
+                    case StageType.card:
+                        enmIdx = Random.Range(4, enemys.Length);
+                        break;
+                    case StageType.mix:
+                        enmIdx = Random.Range(0, enemys.Length);
+                        break;
+                }
+                Instantiate(enemys[enmIdx], points[idx].position, points[idx].rotation);
+                enemyCount++;
+                maxSpawn--;
             }
             else
             {
                 yield return null;
             }
-            maxSpawn--;
         }
     }
 

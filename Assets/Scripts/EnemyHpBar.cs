@@ -9,10 +9,12 @@ public class EnemyHpBar : MonoBehaviour
     RectTransform rectParent;
     RectTransform rectHp;
     public Vector3 offset = Vector3.zero;
-    public Transform targetTr;
+    public GameObject target;
+    GameManager gm;
 
     void Start()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         canvas = GetComponentInParent<Canvas>();
         uiCamera = canvas.worldCamera;
         rectParent = canvas.GetComponent<RectTransform>();
@@ -21,7 +23,7 @@ public class EnemyHpBar : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(targetTr.position + offset);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(target.transform.position + offset);
         if (screenPos.z < 0.0f)
         {
             screenPos *= -1.0f;
@@ -29,5 +31,9 @@ public class EnemyHpBar : MonoBehaviour
         Vector2 localPos = Vector2.zero;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out localPos);
         rectHp.localPosition = localPos;
+        if(target.GetComponent<EnemyAI>().isDie)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
