@@ -704,6 +704,7 @@ MonoBehaviour:
   enMaxHP: 100
   isEnter: 0
   DicePanel: {fileID: 572496997}
+  isSpawnOk: 0
 --- !u!4 &181234631
 Transform:
   m_ObjectHideFlags: 0
@@ -4411,8 +4412,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   rotSpeed: 100
-  tCam: {fileID: 963194225}
-  fCam: {fileID: 272212177}
   weapons:
   - {fileID: 0}
   - {fileID: 0}
@@ -4436,6 +4435,7 @@ MonoBehaviour:
   cartridge: {fileID: 1755766296}
   firePos: {fileID: 234580844}
   fireSound: {fileID: 8300000, guid: c610fb3b1ed4af84c960b962ee40e0c6, type: 3}
+  bulletNum: 12
 --- !u!82 &2058833477
 AudioSource:
   m_ObjectHideFlags: 0

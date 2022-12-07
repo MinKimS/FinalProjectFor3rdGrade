@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public enum Camera
-    {
-        TPS,
-        FPS
-    }
+    //public enum Camera
+    //{
+    //    TPS,
+    //    FPS
+    //}
     public float moveSpeed = 2.0f;
     Vector3 dir;
     public float rotSpeed = 50.0f;
 
-    //카메라
-    public GameObject tCam;
-    public GameObject fCam;
-    Camera cam = Camera.TPS;
+    ////카메라
+    //public GameObject tCam;
+    //public GameObject fCam;
+    //Camera cam = Camera.TPS;
 
     //플레이어 state
-    float atk;
-    float def;
-    float maxHp;
+    //float atk;
+    //float def;
+    //float maxHp;
     public GameObject[] weapons = new GameObject[6];
     int wpIdx = 0;
 
@@ -58,7 +58,7 @@ public class PlayerCtrl : MonoBehaviour
             transform.Translate(dir * len);
             transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
 
-            CameraConvert();    //카메라 전환
+            //CameraConvert();    //카메라 전환
         }
     }
 
@@ -73,34 +73,34 @@ public class PlayerCtrl : MonoBehaviour
 
 
     //인칭 전환
-    void CameraConvert()
-    {
-        if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (cam == Camera.TPS)
-            {
-                FPSCamera();
-                cam = Camera.FPS;
-            }
-            else
-            {
-                TPSCamera();
-                cam = Camera.TPS;
-            }
-        }
-    }
+    //void CameraConvert()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.Tab))
+    //    {
+    //        if (cam == Camera.TPS)
+    //        {
+    //            FPSCamera();
+    //            cam = Camera.FPS;
+    //        }
+    //        else
+    //        {
+    //            TPSCamera();
+    //            cam = Camera.TPS;
+    //        }
+    //    }
+    //}
 
-    //카메라 3인칭설정
-    void TPSCamera()
-    {
-        tCam.SetActive(true);
-        fCam.SetActive(false);
-    }
+    ////카메라 3인칭설정
+    //void TPSCamera()
+    //{
+    //    tCam.SetActive(true);
+    //    fCam.SetActive(false);
+    //}
 
-    //카메라 1인칭설정
-    void FPSCamera()
-    {
-        tCam.SetActive(false);
-        fCam.SetActive(true);
-    }
+    ////카메라 1인칭설정
+    //void FPSCamera()
+    //{
+    //    tCam.SetActive(false);
+    //    fCam.SetActive(true);
+    //}
 }

@@ -150,6 +150,7 @@ public class Dice : MonoBehaviour
             case Dtype.pMaxHP:
                 gm.pMaxHP = pMaxHP * value;
                 break;
+                //이벤트 다이스도 만들기
         }
         Invoke("HideDice", 12.0f);
     }
