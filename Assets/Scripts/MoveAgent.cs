@@ -35,7 +35,10 @@ public class MoveAgent : MonoBehaviour
     }
     void Start()
     {
-        patrolSpeed += Random.Range(0.5f, 1.0f);
+        if(gameObject.tag == "Boss")
+            patrolSpeed = 1.0f;
+        else
+            patrolSpeed += Random.Range(0.5f, 1.0f);
         traceSpeed += Random.Range(0.5f, 1.0f);
         nma = GetComponent<NavMeshAgent>();
         nma.speed = patrolSpeed;

@@ -9,6 +9,7 @@ public class FireCtrl : MonoBehaviour
     public ParticleSystem cartridge;
     public Transform firePos;
     public AudioClip fireSound;
+    public GameObject warningText;
 
     ParticleSystem fireEffect;
     AudioSource _audio;
@@ -27,7 +28,7 @@ public class FireCtrl : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !gm.isEnter && !gm.isGameOver)
+        if (Input.GetMouseButtonDown(0) && !gm.isEnter && !gm.isGameOver && !gm.isShop)
         {
             //장탄수 0이면 총발사 불가
             if(!isFire && bulletNum > 0)
@@ -36,11 +37,21 @@ public class FireCtrl : MonoBehaviour
                 StartCoroutine(FireCheck());
             }
         }
+        if(gm.isEnter)
+		{
+            ChargeBullet();
+
+        }
         //만약 r을 누르면 장탄수 원상복구
         //스테이지 변경되었을때 무기설정
-        if (Input.GetKey(KeyCode.R)|| gm.isEnter)
+        if (Input.GetKey(KeyCode.R)|| gm.isShop)
         {
             ChargeBullet();
+        }
+        //장탄수 부족 경고
+        if(bulletNum < 1)
+		{
+            warningText.SetActive(true);
         }
     }
 
@@ -73,8 +84,11 @@ public class FireCtrl : MonoBehaviour
                 bulletNum = 5;
                 break;
         }
+        //장탄수 경고 텍스트 숨기기
+        warningText.SetActive(false);
     }
 
+    //총알 발사
     void Fire()
     {
         Instantiate(bullet, firePos.position, firePos.rotation);

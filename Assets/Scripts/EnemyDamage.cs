@@ -21,36 +21,42 @@ public class EnemyDamage : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         c = gameObject.GetComponentInChildren<Renderer>();
         curColor = c.material.color;
+        StartCoroutine(SetHPAndWeapon());
+    }
+    IEnumerator SetHPAndWeapon()
+    {
         SetHpBar();
         SetWeaponDamage();
+        yield return null;//다음스테이지될때까지 대기(null 말고 조건그걸로 바꾸기)
     }
-    void SetWeaponDamage()
-    {
+
+    void SetWeaponDamage()//테스트를 위해 100곱해둠
+	{
         switch (gm.weapon)
         {
             //권총
             case 0:
-                gDamage = 3;
+                gDamage = 300;
                 break;
             //라이플
             case 1:
-                gDamage = 2;
+                gDamage = 200;
                 break;
             //리볼버
             case 2:
-                gDamage = 4;
+                gDamage = 400;
                 break;
             //샷건
             case 3:
-                gDamage = 8;
+                gDamage = 800;
                 break;
             //SMG
             case 4:
-                gDamage = 1;
+                gDamage = 100;
                 break;
             //스나이퍼
             case 5:
-                gDamage = 5;
+                gDamage = 500;
                 break;
         }
     }

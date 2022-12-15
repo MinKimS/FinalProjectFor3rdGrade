@@ -173,7 +173,7 @@ MonoBehaviour:
   attackDist: 0.3
   traceDist: 3
   isDie: 0
-  dieEffect: {fileID: 0}
+  dieEffect: {fileID: 9018464790836898356}
 --- !u!114 &4745312868372139024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,5 +321,10 @@ PrefabInstance:
 --- !u!4 &9018464790818549620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
+  m_PrefabInstance: {fileID: 9018464790818682352}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &9018464790836898356 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19800004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
   m_PrefabInstance: {fileID: 9018464790818682352}
   m_PrefabAsset: {fileID: 0}

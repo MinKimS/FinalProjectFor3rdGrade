@@ -9,11 +9,12 @@ public class EnemyAI : MonoBehaviour
         PATROL,
         TRACE,
         ATTACK,
+        BOSS,
         DIE
     }
     public enum Type
     {
-        P,
+        PA,
         PTA,
         TA
     }
@@ -72,6 +73,12 @@ public class EnemyAI : MonoBehaviour
     {
         StartCoroutine(CheckState());
         StartCoroutine(Action());
+
+        if(state == State.BOSS)
+		{
+            //일정시간마다 변하기(코루틴)
+            //일정시간마다 범위 공격 발사(코루틴)
+        }
     }
 
 
@@ -83,9 +90,9 @@ public class EnemyAI : MonoBehaviour
 
             float dist = Vector3.Distance(playerTr.position, enemyTr.position);
 
-            if (type == Type.P)
+            if (type == Type.PA)
             {
-                state = State.PATROL;
+                state = State.BOSS;
             }
             else
             {
@@ -109,6 +116,10 @@ public class EnemyAI : MonoBehaviour
 
             switch (state)
             {
+                case State.BOSS:
+                    moveAgent.SetPatrolling(true);
+                    enemyFire.isFire = true;
+                    break;
                 case State.PATROL:
                     if(range == Range.LONG) enemyFire.isFire = false;
                     moveAgent.SetPatrolling(true);
@@ -129,6 +140,7 @@ public class EnemyAI : MonoBehaviour
                 case State.DIE:
                     isDie = true;
                     gm.enemyCount--;
+                    gm.killCount++;
                     if (range == Range.LONG) enemyFire.isFire = false;
                     moveAgent.Stop();
                     dieEffect.Play();

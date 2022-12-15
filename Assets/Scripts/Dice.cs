@@ -23,7 +23,8 @@ public class Dice : MonoBehaviour
     public enum DUse
     {
         enter,
-        stage
+        stage,
+        two
     }
     public DUse dUse;
 
@@ -63,7 +64,7 @@ public class Dice : MonoBehaviour
         pMaxHP = gm.pMaxHP;
         enMaxHP = gm.enMaxHP;
     }
-    void Start()
+    void OnEnable()
     {
         if (dUse == DUse.enter)
         {
@@ -72,6 +73,11 @@ public class Dice : MonoBehaviour
         if (dUse == DUse.stage)
         {
             Invoke("Roll", 3.0f);
+        }
+        if(dUse == DUse.two)
+		{
+            RollDice();
+
         }
     }
 
@@ -86,8 +92,13 @@ public class Dice : MonoBehaviour
         StartCoroutine(RollRepeatDice());
     }
 
-    //state 기본 값으로 원상복구
-    void stateClear()
+	private void OnDisable()
+	{
+        StopAllCoroutines();
+	}
+
+	//state 기본 값으로 원상복구
+	void stateClear()
     {
         //Player setting
         gm.atkP = atkP;
@@ -109,8 +120,10 @@ public class Dice : MonoBehaviour
         diceImgIdx = Random.Range(0, 6);
         diceNum = diceImgIdx + 1;
         diceImg.sprite = diceImgs[diceImgIdx];
+    }
 
-        //state에 영향을 줄 값
+    void setValue()
+	{
         switch (diceNum)
         {
             case 1:
@@ -136,29 +149,38 @@ public class Dice : MonoBehaviour
     void RollOneTimeDice()
     {
         RollDice();
+        //state에 영향을 줄 값
+        setValue();
         switch (dType)
         {
             case Dtype.enMax:
+                gm.enMax = enMax;
                 gm.enMax = enMax * value;
                 break;
             case Dtype.weapon:
+                gm.weapon = weapon;
                 gm.weapon = diceImgIdx;
                 break;
             case Dtype.enMaxHP:
+                gm.enMaxHP = enMaxHP;
                 gm.enMaxHP = enMaxHP * value;
                 break;
             case Dtype.pMaxHP:
+                gm.pMaxHP = pMaxHP;
                 gm.pMaxHP = pMaxHP * value;
                 break;
                 //이벤트 다이스도 만들기
         }
-        Invoke("HideDice", 12.0f);
+        if (gm.curStage > 1) Invoke("HideDice", 3.0f);
+        else Invoke("HideDice", 12.0f);
+        //스테이지 이동시 스테이지 설정 주사위가 hide라 안되는 문제
     }
 
     void HideDice()
     {
         gameObject.SetActive(false);
     }
+
 
     //스테이지 진행중 주사위
     IEnumerator RollRepeatDice()
@@ -172,7 +194,9 @@ public class Dice : MonoBehaviour
                 StopAllCoroutines();
             }
             RollDice();
-            switch(dType)
+            //state에 영향을 줄 값
+            setValue();
+            switch (dType)
             {
                 case Dtype.atkP:
                     gm.atkP = atkP * value;
