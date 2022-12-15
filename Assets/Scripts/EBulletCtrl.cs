@@ -9,9 +9,9 @@ public class EBulletCtrl : MonoBehaviour
     Transform playerPos;
     void Start()
     {
-        playerPos = GameObject.Find("Player").GetComponent<Transform>();
-        print(playerPos.position);
-        GetComponent<Rigidbody>().AddForce(playerPos.position.x * speed, playerPos.position.y * speed, 100 * speed);
+        //playerPos = GameObject.Find("Player").GetComponent<Transform>();
+        //print(playerPos.position);
+        GetComponent<Rigidbody>().AddForce(transform.forward * speed);
     }
 
     void Update()

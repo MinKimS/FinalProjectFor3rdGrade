@@ -9,6 +9,7 @@ public class BulletCtrl : MonoBehaviour
     void Start()
     {
         GetComponent<Rigidbody>().AddForce(transform.forward * speed);
+        Destroy(gameObject, 3f);
     }
 
     void Update()

@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
             //Àû¼ÒÈ¯
             if (points.Length > 0)
             {
-                StartCoroutine(CreateEnemy(enMax));
+                //StartCoroutine(CreateEnemy(enMax));
             }
         }
 

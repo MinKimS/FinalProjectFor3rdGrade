@@ -8,11 +8,18 @@ public class RemoveBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Bullet" || collision.collider.tag == "EnemyBullet")
+        if(collision.collider.tag == "Bullet")
         {
             ShowEffect(collision);
             Destroy(collision.gameObject);
-            //collision.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "EnemyBullet")
+        {
+            Destroy(other.gameObject);
         }
     }
     void ShowEffect(Collision coll)
