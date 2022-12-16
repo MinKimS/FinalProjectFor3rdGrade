@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5591a26423047144bba633795a68082, type: 3}
+  m_Name: MaxHP 2
+  m_EditorClassIdentifier: 
+  itemType: 1
+  itemName: "\uCD5C\uB300\uCCB4\uB825 \uAC10\uC18C"
+  itemImg: {fileID: 21300000, guid: 87a7c4321fd50514c8e41d6779a071da, type: 3}
+  itemDesc: "\uCD5C\uB300\uCCB4\uB825 -5\n\uACF5\uACA9\uB825 +5"
+  chgitem:
+  - chgMaxHP
+  - chgAtk
+  value:
+  - -5
+  - 5
+  itmePrice: 400

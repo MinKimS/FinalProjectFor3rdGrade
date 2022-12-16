@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Damage : MonoBehaviour
 {
-	public float curHp; //현재 Hp
-
 	public Image bloodScreen;
 	public Image hpBar;
 
@@ -20,26 +18,25 @@ public class Damage : MonoBehaviour
 
 		hpBar.color = initColor;
 		curColor = initColor;
-		curHp = gm.pMaxHP;
     }
-    private void Update()
-    {
-		//MaxHp 설정
-		if(gm.isEnter)
-		{
-			curHp = gm.pMaxHP;
-		}
-    }
+  //  private void Update()
+  //  {
+		////MaxHp 설정
+		//if(gm.isEnter)
+		//{
+		//	curHp = gm.pMaxHP;
+		//}
+  //  }
     private void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "EnemyBullet" || other.tag == "Enemy")
 		{
 			if(other.tag == "EnemyBullet") Destroy(other.gameObject);
 			//데미지
-			curHp -= gm.atkE*(1-gm.defP);
+			gm.curHp -= gm.atkE*(1-gm.defP);
 			//Debug.Log("Player HP = " + curHp.ToString());
 			//플레이어 사망
-			if (curHp <= 0.0f)
+			if (gm.curHp <= 0.0f)
 			{
 				PlayerDie();
 			}
@@ -72,7 +69,7 @@ public class Damage : MonoBehaviour
     }
 	void DisplayHpbar()
 	{
-		float ratio = curHp / gm.pMaxHP;
+		float ratio = gm.curHp / gm.pMaxHP;
 		if (ratio > 0.5f)
 			curColor.r = (1 - ratio) * 2.0f;
 		else

@@ -58,7 +58,7 @@ public class PlayerCtrl : MonoBehaviour
 			CameraConvert();    //카메라 전환
 		}
 
-        if(gm.isShop || gm.isGameOver)
+        if(gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt))
 		{
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

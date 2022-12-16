@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
         boss
     }
     public StageType sType;
+
     public Transform[] points; //적 스폰포인트
     public GameObject[] enemys; //소환될 적들
     private float createTime = 1.0f; //적 소환 딜레이 타임
@@ -26,13 +27,14 @@ public class GameManager : MonoBehaviour
     public float atkP = 1.0f;
     public float defP = 0.1f;
     //Enemy setting
-    public float atkE = 1.0f;
+    public float atkE = 5.0f;
     public float defE = 0.1f;
     //Stage setting
     public int weapon = 0;
     public float enMax = 4.0f;
     public float pMaxHP = 100;
     public float enMaxHP = 100;
+    public float curHp; //플레이어 현재 체력
 
     public bool isEnter = true; //새로운 스테이지 입장여부
     public bool isSpawnOk = false;  //스폰체크
@@ -48,10 +50,18 @@ public class GameManager : MonoBehaviour
     //현재 스테이지
     public int curStage = 1;
 
+    //아이템으로 인해 변화되는 능력치
+    public float chgAtk = 0; //변화되는 공격력
+    public float chgDef = 0; //변화되는 방어력
+    public float chgMaxHP = 0; //변화되는 최대체력
+    public float recoverHP = 0; //체력회복되는 수치
+    public int weaponUp = 0; //무기강화횟수
+    public float diceNum;   //주사위 값
+    private Vector3 pSpawnPos; //플레이어 스폰 위치
+
     public GameObject shopUI; //상점UI
     public GameObject pPos; //플레이어
     public GameObject diceUI; //주사위UI
-    public GameObject oneDiceUI; //한번굴리는 주사위UI
     public Text stage; //스테이지 텍스트
     public GameObject boss; //보스
     public GameObject ClearUI; //게임 클리어
@@ -59,10 +69,11 @@ public class GameManager : MonoBehaviour
     public Text st; //플레이어 능력치
     public GameObject[] spawnPos; //스폰될 위치 표시 오브젝트
     public GameObject[] dices;
-    private Vector3 pSpawnPos; //플레이어 스폰 위치
+    public Text moneyText; //돈 텍스트
 
     void Start()
     {
+        curHp = pMaxHP;
         pSpawnPos = new Vector3(0,0.26f,0);
         isEnter = true;
         //적 소환위치 저장
@@ -73,13 +84,13 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         //게임이 시작하면 몹 스폰
-        if(!isEnter && isSpawnOk)
+        if (!isEnter && isSpawnOk)
         {
             isSpawnOk = false;
             //적소환
             if (points.Length > 0)
             {
-                //StartCoroutine(CreateEnemy(enMax));
+                StartCoroutine(CreateEnemy(enMax));
             }
         }
 
@@ -94,6 +105,16 @@ public class GameManager : MonoBehaviour
 			{
 
 			}
+        }
+
+        if(isShop)
+        {
+            //돈 텍스트 설정
+            moneyText.text = "돈 : " + money;
+
+            //상점의 플레이어 능력치 표시
+            st.text = "공격력 : " + (atkP + chgAtk) + "\n방어: " + (defP + chgDef) +
+                "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp;
         }
     }
 
@@ -143,9 +164,9 @@ public class GameManager : MonoBehaviour
         diceUI.SetActive(false);
         shopUI.SetActive(true);
         //상점의 플레이어 능력치 표시
-        //판매할아이템 설정
-        //아이템 중에서 랜덤으로 하나를 선택
-        //
+        st.text = "공격력 : " + (atkP + chgAtk) + "\n방어: " + (defP + chgDef) + 
+            "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp;
+        moneyText.text = "돈 : " + money;//돈 텍스트 설정
     }
 
     public void NextStage()
@@ -157,7 +178,9 @@ public class GameManager : MonoBehaviour
         pPos.transform.position = pSpawnPos;
         shopUI.SetActive(false);
         diceUI.SetActive(true);
-        if(curStage == 15)
+        //능력치랑 무기 등을 설정
+        Setstate();
+        if (curStage == 15)
 		{
             stage.text = "BOSS STAGE";
             sType = StageType.boss;
@@ -191,22 +214,27 @@ public class GameManager : MonoBehaviour
         //
     }
 
-    //아이템 구매 함수
-    public void Buy(int num)
-    {
-        //주사위 돌리기
-        //주사위 돌리기 성공
-        //아이템 구매함
-
-
-        //주사위 돌리기 실패
-        //실패텍스트 또는 소리 내기
-    }
-
     //숨겨놨던 스테이지 주사위 보이기
     void ShowDice()
     {
         for(int i = 0; i<dices.Length; i++)
             dices[i].SetActive(true);
+    }
+
+    //state 기본 값으로 원상복구
+    void Setstate()
+    {
+        //Player setting
+        atkP = 1.0f + chgAtk;
+        defP = 0.1f + chgDef;
+        curHp += recoverHP;
+        //Enemy setting
+        atkE = 5.0f;
+        defE = 0.1f;
+        //Stage setting
+        weapon = 0;
+        enMax = 4.0f;
+        pMaxHP = 100 + chgMaxHP;
+        enMaxHP = 100;
     }
 }

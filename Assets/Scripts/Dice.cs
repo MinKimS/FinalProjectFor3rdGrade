@@ -24,7 +24,7 @@ public class Dice : MonoBehaviour
     {
         enter,
         stage,
-        two
+        one
     }
     public DUse dUse;
 
@@ -51,6 +51,10 @@ public class Dice : MonoBehaviour
     {
         diceImg = GetComponent<Image>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    void OnEnable()
+    {
         //다시 주사위가 돌아갔을 때 원래 값에서 설정하기 위한 변수
         //Player setting
         atkP = gm.atkP;
@@ -63,9 +67,7 @@ public class Dice : MonoBehaviour
         enMax = gm.enMax;
         pMaxHP = gm.pMaxHP;
         enMaxHP = gm.enMaxHP;
-    }
-    void OnEnable()
-    {
+
         if (dUse == DUse.enter)
         {
             RollOneTimeDice();
@@ -74,16 +76,16 @@ public class Dice : MonoBehaviour
         {
             Invoke("Roll", 3.0f);
         }
-        if(dUse == DUse.two)
+        if(dUse == DUse.one)
 		{
             RollDice();
-
+            setDiceNum();
         }
     }
 
-    private void Update()
+    void setDiceNum()
     {
-
+        gm.diceNum = diceNum;
     }
 
     void Roll()
@@ -97,21 +99,21 @@ public class Dice : MonoBehaviour
         StopAllCoroutines();
 	}
 
-	//state 기본 값으로 원상복구
-	void stateClear()
-    {
-        //Player setting
-        gm.atkP = atkP;
-        gm.defP = defP;
-        //Enemy setting
-        gm.atkE = atkE;
-        gm.defE = defE;
-        //Stage setting
-        gm.weapon = weapon;
-        gm.enMax = enMax;
-        gm.pMaxHP = pMaxHP;
-        gm.enMaxHP = enMaxHP;
-    }
+    ////state 기본 값으로 원상복구
+    //void stateClear()
+    //{
+    //    //Player setting
+    //    gm.atkP = atkP;
+    //    gm.defP = defP;
+    //    //Enemy setting
+    //    gm.atkE = atkE;
+    //    gm.defE = defE;
+    //    //Stage setting
+    //    gm.weapon = weapon;
+    //    gm.enMax = enMax;
+    //    gm.pMaxHP = pMaxHP;
+    //    gm.enMaxHP = enMaxHP;
+    //}
 
     //주사위를 돌리는 함수
     void RollDice()
