@@ -113,8 +113,8 @@ public class GameManager : MonoBehaviour
             moneyText.text = "돈 : " + money;
 
             //상점의 플레이어 능력치 표시
-            st.text = "공격력 : " + (atkP + chgAtk) + "\n방어: " + (defP + chgDef) +
-                "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp;
+            st.text = "공격력 : " + (1.0f + chgAtk) + "\n방어: " + (0.1f + chgDef) +
+                "\n무기강화: " + weaponUp + "\n최대체력: " + (100 + pMaxHP) + "\n현재체력: " + curHp;
         }
     }
 

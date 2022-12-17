@@ -74,7 +74,8 @@ public class Dice : MonoBehaviour
         }
         if (dUse == DUse.stage)
         {
-            Invoke("Roll", 3.0f);
+            Roll();
+            //Invoke("Roll", 3.0f);
         }
         if(dUse == DUse.one)
 		{
@@ -173,21 +174,20 @@ public class Dice : MonoBehaviour
                 break;
                 //이벤트 다이스도 만들기
         }
-        if (gm.curStage > 1) Invoke("HideDice", 3.0f);
-        else Invoke("HideDice", 12.0f);
+        Invoke("HideDice", 3.0f);
         //스테이지 이동시 스테이지 설정 주사위가 hide라 안되는 문제
     }
 
     void HideDice()
     {
         gameObject.SetActive(false);
+        gm.isEnter = false;
     }
 
 
     //스테이지 진행중 주사위
     IEnumerator RollRepeatDice()
     {
-        gm.isEnter = false;
         while (true)
         {
             yield return new WaitForSeconds(8.0f);
