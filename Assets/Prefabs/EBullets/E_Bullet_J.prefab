@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5634530315141759373}
   - component: {fileID: 4912724956817744924}
   m_Layer: 10
-  m_Name: E_Bullet
+  m_Name: E_Bullet_J
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,7 +199,7 @@ ConstantForce:
   m_GameObject: {fileID: 3138641447082275379}
   m_Enabled: 1
   m_Force: {x: 0, y: 0, z: 0}
-  m_RelativeForce: {x: 0, y: 0, z: 5}
+  m_RelativeForce: {x: 0, y: 0, z: 2}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!114 &4912724956817744924
@@ -214,8 +214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141d79abb409e5042b3220060c21e845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
-  etype: 0
+  damage: 10
+  etype: 5
 --- !u!1001 &6048782346875902748
 PrefabInstance:
   m_ObjectHideFlags: 0

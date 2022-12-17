@@ -52,14 +52,15 @@ public class PlayerCtrl : MonoBehaviour
 			float len = moveSpeed * Time.deltaTime;
 			transform.Translate(dir * len);
 			transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
-
-			CameraConvert();    //카메라 전환
 		}
 	}
     void Update()
-    {
-        //무기 설정
-		if(cam == Camera.TPS)
+	{
+		if (!gm.isEnter && !gm.isGameOver && !gm.isShop)
+			CameraConvert();    //카메라 전환
+
+		//무기 설정
+		if (cam == Camera.TPS)
 			SetWeapon();
 
         if(gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt))

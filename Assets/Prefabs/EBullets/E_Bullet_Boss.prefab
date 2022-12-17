@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5634530315141759373}
   - component: {fileID: 4912724956817744924}
   m_Layer: 10
-  m_Name: E_Bullet
+  m_Name: E_Bullet_Boss
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,7 +199,7 @@ ConstantForce:
   m_GameObject: {fileID: 3138641447082275379}
   m_Enabled: 1
   m_Force: {x: 0, y: 0, z: 0}
-  m_RelativeForce: {x: 0, y: 0, z: 5}
+  m_RelativeForce: {x: 0, y: 0, z: 2}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!114 &4912724956817744924

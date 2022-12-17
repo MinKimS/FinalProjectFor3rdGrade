@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 1208443539892930828}
   - component: {fileID: 1208443539892930829}
   - component: {fileID: 2018783813824280461}
+  - component: {fileID: 2575930189915543041}
   m_Layer: 0
   m_Name: WhiteKnight
   m_TagString: Enemy
@@ -169,7 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wayPoints: []
   patrolSpeed: 1
-  traceSpeed: 4
+  traceSpeed: 5
+  anSpeed: 500
 --- !u!114 &1208443539892930828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,11 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7045a7456ed9f37438e7714592fc7563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
-  state: 0
-  range: 1
-  attackDist: 0.4
-  traceDist: 3
+  type: 1
+  state: 1
+  attackDist: 1
+  stopAttackDist: 0.3
   isDie: 0
   dieEffect: {fileID: 2453121870004957647}
 --- !u!114 &1208443539892930829
@@ -201,6 +202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14240caf0a2c57643af324e45972f1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaxHp: 60
+  curHp: 100
   hpBarPrefab: {fileID: 5716181843595146107, guid: 9c80d7a946e57e94aa33b424082cfc9f, type: 3}
   hpBarOffset: {x: 0, y: 0.6, z: 0}
   gDamage: 1
@@ -220,6 +223,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2575930189915543041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018783813824280460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141d79abb409e5042b3220060c21e845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 4
+  etype: 1
 --- !u!1001 &2453121870020292107
 PrefabInstance:
   m_ObjectHideFlags: 0

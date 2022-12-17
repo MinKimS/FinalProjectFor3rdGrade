@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 4745312868372139024}
   - component: {fileID: 4745312868372139027}
   - component: {fileID: 5556269004731508400}
+  - component: {fileID: 6086002984869305602}
   m_Layer: 8
   m_Name: WhitePawn
   m_TagString: Enemy
@@ -167,11 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7045a7456ed9f37438e7714592fc7563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
-  state: 0
-  range: 1
-  attackDist: 0.3
-  traceDist: 3
+  type: 1
+  state: 1
+  attackDist: 1
+  stopAttackDist: 0.3
   isDie: 0
   dieEffect: {fileID: 9018464790836898356}
 --- !u!114 &4745312868372139024
@@ -186,6 +186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14240caf0a2c57643af324e45972f1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaxHp: 50
+  curHp: 100
   hpBarPrefab: {fileID: 5716181843595146107, guid: 9c80d7a946e57e94aa33b424082cfc9f, type: 3}
   hpBarOffset: {x: 0, y: 0.6, z: 0}
   gDamage: 1
@@ -203,7 +205,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wayPoints: []
   patrolSpeed: 1
-  traceSpeed: 2
+  traceSpeed: 3
+  anSpeed: 360
 --- !u!54 &5556269004731508400
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -220,6 +223,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6086002984869305602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5556269004731508367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141d79abb409e5042b3220060c21e845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 3
+  etype: 0
 --- !u!1001 &9018464790818682352
 PrefabInstance:
   m_ObjectHideFlags: 0

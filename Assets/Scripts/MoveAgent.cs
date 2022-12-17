@@ -12,6 +12,7 @@ public class MoveAgent : MonoBehaviour
     public float patrolSpeed = 1.0f;
     //추적속도
     public float traceSpeed = 1.0f;
+    public float anSpeed = 120; //회전속도
 
     NavMeshAgent nma;
     //순찰여부
@@ -23,14 +24,14 @@ public class MoveAgent : MonoBehaviour
     {
         patrolling = patrol;
         nma.speed = patrolSpeed;
-        nma.angularSpeed = 120;
+        nma.angularSpeed = anSpeed;
         MoveWayPoint();
     }
     public void SetTraceTarget(Vector3 pos)
     {
         traceTarget = pos;
         nma.speed = traceSpeed;
-        nma.angularSpeed = 360;
+        nma.angularSpeed = anSpeed;
         Tracetarget(traceTarget);
     }
     void Start()

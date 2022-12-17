@@ -33,8 +33,20 @@ public class Damage : MonoBehaviour
 		{
 			if(other.tag == "EnemyBullet") Destroy(other.gameObject);
 			//데미지
-			gm.curHp -= gm.atkE*(1-gm.defP);
-			//Debug.Log("Player HP = " + curHp.ToString());
+			float bulletDmg = 0;
+			float contactDmg = 0;
+			if (other.tag == "EnemyBullet")
+            {
+				bulletDmg = other.GetComponent<EDamageData>().damage;
+				//gm.curHp -= (gm.atkE + bulletDmg) * (1 - gm.defP);
+				//Debug.Log("Damage = " + bulletDmg + "+" + gm.atkE +"=" + (gm.atkE+bulletDmg));
+			}
+			else
+            {
+				contactDmg = other.GetComponent<EDamageData>().damage;
+				//gm.curHp -= (gm.atkE + contactDmg) * (1 - gm.defP);
+				//Debug.Log("Damage = " + contactDmg + "+" + gm.atkE + "=" + (gm.atkE + contactDmg));
+			}
 			//플레이어 사망
 			if (gm.curHp <= 0.0f)
 			{

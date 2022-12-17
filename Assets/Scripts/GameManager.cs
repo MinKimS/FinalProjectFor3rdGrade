@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     public int weaponUp = 0; //무기강화횟수
     public float diceNum;   //주사위 값
     private Vector3 pSpawnPos; //플레이어 스폰 위치
-    private bool stageUp = false;
+    //private bool stageUp = false;
 
     public GameObject gmOverUI; //게임오버창
     public GameObject gmClearUI; //게임클리어창
@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
     public AudioClip[] BGMs; //배경음악
     public AudioSource ads;
     public AudioClip[] aClip; //효과음
+
     private void Awake()
     {
         ads = GetComponent<AudioSource>();
@@ -102,7 +103,6 @@ public class GameManager : MonoBehaviour
         //플레이어, 공격 정지
         if (killCount == enMax)
         {
-            print("test");
             curStage++;
 
             if (curStage < 16)

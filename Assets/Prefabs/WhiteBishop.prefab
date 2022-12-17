@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 7935321177221397853}
   - component: {fileID: 7935321177221397843}
   - component: {fileID: 7124278174357389127}
+  - component: {fileID: 4491431669580522988}
   m_Layer: 0
   m_Name: WhiteBishop
   m_TagString: Enemy
@@ -266,11 +267,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7045a7456ed9f37438e7714592fc7563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 2
   state: 0
-  range: 0
-  attackDist: 1.5
-  traceDist: 3
+  attackDist: 5
+  stopAttackDist: 2
   isDie: 0
   dieEffect: {fileID: 7716608190369877439}
 --- !u!114 &7935321177221397854
@@ -288,6 +288,7 @@ MonoBehaviour:
   wayPoints: []
   patrolSpeed: 0.5
   traceSpeed: 2
+  anSpeed: 120
 --- !u!114 &7935321177221397853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,8 +303,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFire: 0
   fireSfx: {fileID: 8300000, guid: c610fb3b1ed4af84c960b962ee40e0c6, type: 3}
-  Bullet: {fileID: 3138641447082275379, guid: fa39112c2b4bf244fbf9229788013ec0, type: 3}
+  Bullet: {fileID: 3138641447082275379, guid: 8f375d2ac2981304b830929da5ffef1e, type: 3}
   firePos: {fileID: 7935321177689324493}
+  fireRate: 1
+  damping: 10
 --- !u!114 &7935321177221397843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +319,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14240caf0a2c57643af324e45972f1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaxHp: 80
+  curHp: 100
   hpBarPrefab: {fileID: 5716181843595146107, guid: 9c80d7a946e57e94aa33b424082cfc9f, type: 3}
   hpBarOffset: {x: 0, y: 0.6, z: 0}
   gDamage: 1
@@ -335,6 +340,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4491431669580522988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7124278174357389120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141d79abb409e5042b3220060c21e845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
+  etype: 2
 --- !u!1 &7935321177689324494
 GameObject:
   m_ObjectHideFlags: 0
