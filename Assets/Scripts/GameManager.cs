@@ -70,12 +70,20 @@ public class GameManager : MonoBehaviour
     public GameObject[] spawnPos; //스폰될 위치 표시 오브젝트
     public GameObject[] dices;
     public Text moneyText; //돈 텍스트
-
+    public AudioClip[] BGMs; //배경음악
+    public AudioSource ads;
+    public AudioClip[] aClip; //효과음
+    private void Awake()
+    {
+        ads = GetComponent<AudioSource>();
+        Setstate();//초기 능력치 설정
+    }
     void Start()
     {
-        Setstate();
-        curHp = pMaxHP;
-        pSpawnPos = new Vector3(0,0.26f,0);
+        ads.clip = BGMs[1];//스테이지 BGM 설정
+        ads.Play();//BGM 플레이
+        curHp = pMaxHP;//현재 hp를 최대체력으로 설정
+        pSpawnPos = new Vector3(0,0.26f,0); //플레이어 리스폰 장소
         isEnter = true;
         //적 소환위치 저장
         points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
@@ -91,7 +99,7 @@ public class GameManager : MonoBehaviour
             //적소환
             if (points.Length > 0)
             {
-                //StartCoroutine(CreateEnemy(enMax));
+                StartCoroutine(CreateEnemy(enMax));
             }
         }
 
@@ -160,6 +168,8 @@ public class GameManager : MonoBehaviour
     
     void Shop()
     {
+        ads.clip = BGMs[2];
+        ads.volume = 0.3f;
         killCount = 0;
         isShop = true;
         diceUI.SetActive(false);
@@ -168,6 +178,7 @@ public class GameManager : MonoBehaviour
         st.text = "공격력 : " + (atkP + chgAtk) + "\n방어: " + (defP + chgDef) + 
             "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp;
         moneyText.text = "돈 : " + money;//돈 텍스트 설정
+        ads.Play();
     }
 
     public void NextStage()
@@ -182,13 +193,17 @@ public class GameManager : MonoBehaviour
         //능력치랑 무기 등을 설정
         Setstate();
         if (curStage == 15)
-		{
+        {
+            ads.clip = BGMs[0];//스테이지 BGM 설정
+            ads.volume = 0.4f;
             stage.text = "BOSS STAGE";
             sType = StageType.boss;
             boss.SetActive(true);
         }
         else
-		{
+        {
+            ads.clip = BGMs[1];//스테이지 BGM 설정
+            ads.volume = 0.15f;
             stage.text = "STAGE " + curStage;
 
             //소환될 몹 스테이지별 설정
@@ -208,6 +223,7 @@ public class GameManager : MonoBehaviour
                 sType = StageType.chess;
             }
         }
+        ads.Play();//BGM 플레이
         ShowDice();
         isEnter = true; //총변경시 총알도 설정
         //아닌경우

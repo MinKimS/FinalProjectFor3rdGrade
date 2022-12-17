@@ -4,25 +4,33 @@ using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
 {
-    public GameObject player;
-    //Vector3 delta = new Vector3(0.0f, 1.0f, 2.0f);
-    public Vector3 delta = new Vector3(-0.2f, 1.0f, -1.4f);
-    void LateUpdate()
+    private Vector3 dist; //플레이어와 카메라 거리
+    public Transform player; //플레이어
+    public MeshRenderer[] walls;
+
+    private void Start()
     {
+        player = transform.parent; //플레이어 transform 저장
+    }
+
+    private void Update()
+    {
+        dist = player.transform.position - transform.position; //플레이어와 카메라 거리
         RaycastHit hit;
-        if(Physics.Raycast(player.transform.position, delta, out hit, delta.magnitude, LayerMask.GetMask("Wall")))
+        MeshRenderer md;
+        int layermask = 1 << 6; //벽 레이어
+        //카메라와 벽 충돌 시 벽 투명하게
+        if (Physics.Raycast(transform.position, dist, out hit, 10, layermask))
         {
-            //float dist = (hit.point - player.transform.position).magnitude * 0.3f;
-            //transform.position = player.transform.position + delta.normalized * dist;
-            float dist = (hit.point - player.transform.position).magnitude * 0.3f;
-            transform.position = player.transform.position + delta.normalized * dist;
+            md = hit.collider.GetComponent<MeshRenderer>();
+            md.enabled = false;
         }
         else
         {
-            //transform.position = delta;
-            //transform.LookAt(player.transform);
+            for(int i = 0; i < walls.Length; i++)
+                walls[i].enabled = true;
         }
 
-        Debug.DrawRay(player.transform.position, transform.position-player.transform.position, Color.red);
+        Debug.DrawRay(transform.position, dist, Color.red);
     }
 }

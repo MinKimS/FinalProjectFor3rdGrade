@@ -21,15 +21,17 @@ public class Shop : MonoBehaviour
     public GameObject failText; //주사위 실패 텍스트
     private Button btn; //버튼 컴포넌트
     private ColorBlock cb; //버튼 색상
+    private AudioSource ads;
 
     private void Awake()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        ads = gm.GetComponent<AudioSource>();
         btn = GetComponent<Button>();
         cb = btn.colors;
     }
     private void OnEnable()
     {
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         itemIdx = Random.Range(0, items.Length);
         itemImg.sprite = items[itemIdx].itemImg;
         itemName.text = items[itemIdx].itemName;
@@ -98,6 +100,7 @@ public class Shop : MonoBehaviour
         if (gm.diceNum > 2)
         {
             successText.SetActive(true);
+            ads.PlayOneShot(gm.aClip[4]);
             //아이템 구매
             for (int i = 0; i < items[itemIdx].chgitem.Length; i++)
             {
@@ -114,8 +117,10 @@ public class Shop : MonoBehaviour
         //주사위 돌리기 실패
         else
         {
+            //실패텍스트 & 소리 내기
             failText.SetActive(true);
-            //실패텍스트 또는 소리 내기
+            ads.PlayOneShot(gm.aClip[5]);
+
         }
         Invoke("DiceClose", 1.0f);
     }

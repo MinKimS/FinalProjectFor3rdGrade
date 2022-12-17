@@ -46,12 +46,14 @@ public class Dice : MonoBehaviour
     public float pMaxHP;
     public float enMaxHP;
     private Animator diceAnim;
+    public AudioSource ads;
 
     private void Awake()
     {
         diceAnim = GetComponent<Animator>();
         diceImg = GetComponent<Image>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        ads = GetComponentInParent<AudioSource>();
     }
 
     void OnEnable()
@@ -105,6 +107,7 @@ public class Dice : MonoBehaviour
     void RollDice()
     {
         diceAnim.SetBool("isRoll", true);
+        ads.PlayOneShot(gm.aClip[1]);
         //주사위 값 결정
         diceIdx = Random.Range(0, 6);
         diceNum = diceIdx + 1;
@@ -229,5 +232,6 @@ public class Dice : MonoBehaviour
     {
         setAnimNum();
         diceAnim.SetBool("isRoll", false);
+        ads.PlayOneShot(gm.aClip[0]);
     }
 }

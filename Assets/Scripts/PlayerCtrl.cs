@@ -22,6 +22,7 @@ public class PlayerCtrl : MonoBehaviour
     int wpIdx = 0;
 
     GameManager gm;
+
     void Start()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -35,28 +36,31 @@ public class PlayerCtrl : MonoBehaviour
         //기본 무기 들기
         weapons[wpIdx].SetActive(true);
     }
+	
+	//벽 충돌시 플레이어 떨림방지
+    private void FixedUpdate()
+    {
+		//플레이어 이동
+		if (!gm.isEnter && !gm.isGameOver && !gm.isShop)
+		{
+			dir.x = Input.GetAxis("Horizontal");
+			dir.z = Input.GetAxis("Vertical");
+			float r = Input.GetAxis("Mouse X");
 
+			if (dir.magnitude > 1) dir.Normalize();
+
+			float len = moveSpeed * Time.deltaTime;
+			transform.Translate(dir * len);
+			transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
+
+			CameraConvert();    //카메라 전환
+		}
+	}
     void Update()
     {
         //무기 설정
 		if(cam == Camera.TPS)
 			SetWeapon();
-
-        //플레이어 이동
-        if (!gm.isEnter && !gm.isGameOver && !gm.isShop)
-        {
-            dir.x = Input.GetAxis("Horizontal");
-            dir.z = Input.GetAxis("Vertical");
-            float r = Input.GetAxis("Mouse X");
-
-            if (dir.magnitude > 1) dir.Normalize();
-
-            float len = moveSpeed * Time.deltaTime;
-            transform.Translate(dir * len);
-            transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
-
-			CameraConvert();    //카메라 전환
-		}
 
         if(gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt))
 		{
