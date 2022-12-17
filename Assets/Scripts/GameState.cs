@@ -9,6 +9,9 @@ public class GameState : MonoBehaviour
     GameManager gm;
     public Text gmOverText;
     public Text gmClearText;
+    public GameObject oneDiceUI;
+    public GameObject successText; //주사위 성공 텍스트
+    public GameObject failText; //주사위 실패 텍스트
 
     AudioSource audioSource;
 
@@ -28,21 +31,51 @@ public class GameState : MonoBehaviour
     public void reStartGame()
     {
         audioSource.Play();
-        Invoke("roadCurScene", 0.5f);
+        oneDiceUI.SetActive(true);
+        StartCoroutine(roadCurScene());
     }
 
     public void goTitle()
     {
         audioSource.Play();
-        Invoke("roadTitle", 0.5f);
+        oneDiceUI.SetActive(true);
+        StartCoroutine(roadTitle());
     }
 
-    void roadCurScene()
+    IEnumerator roadCurScene()
     {
-        SceneManager.LoadScene("sampleScene");
+        yield return new WaitForSeconds(2.0f);
+        if (gm.diceNum > 3)
+        {
+            successText.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            SceneManager.LoadScene("sampleScene");
+        }
+        else
+        {
+            failText.SetActive(true);
+        }
+        yield return new WaitForSeconds(0.5f);
+        successText.SetActive(false);
+        failText.SetActive(false);
+        oneDiceUI.SetActive(false);
     }
-    void roadTitle()
+    IEnumerator roadTitle()
     {
-        SceneManager.LoadScene("Title");
+        yield return new WaitForSeconds(2.0f);
+        if (gm.diceNum > 3)
+        {
+            successText.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            SceneManager.LoadScene("Title");
+        }
+        else
+        {
+            failText.SetActive(true);
+        }
+        yield return new WaitForSeconds(0.5f);
+        successText.SetActive(false);
+        failText.SetActive(false);
+        oneDiceUI.SetActive(false);
     }
 }

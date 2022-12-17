@@ -29,8 +29,7 @@ public class Dice : MonoBehaviour
     public DUse dUse;
 
     private int diceNum; //주사위 값
-    private int diceImgIdx = 0;
-    public Sprite[] diceImgs; //주사위이미지
+    private int diceIdx = 0;
     Image diceImg; //주사위이미지
     GameManager gm; //state 변수가 있는 클래스
     public float value;
@@ -46,9 +45,11 @@ public class Dice : MonoBehaviour
     public float enMax;
     public float pMaxHP;
     public float enMaxHP;
+    private Animator diceAnim;
 
     private void Awake()
     {
+        diceAnim = GetComponent<Animator>();
         diceImg = GetComponent<Image>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
@@ -74,8 +75,8 @@ public class Dice : MonoBehaviour
         }
         if (dUse == DUse.stage)
         {
-            Roll();
-            //Invoke("Roll", 3.0f);
+            //Roll();
+            Invoke("Roll", 3.0f);
         }
         if(dUse == DUse.one)
 		{
@@ -100,33 +101,41 @@ public class Dice : MonoBehaviour
         StopAllCoroutines();
 	}
 
-    ////state 기본 값으로 원상복구
-    //void stateClear()
-    //{
-    //    //Player setting
-    //    gm.atkP = atkP;
-    //    gm.defP = defP;
-    //    //Enemy setting
-    //    gm.atkE = atkE;
-    //    gm.defE = defE;
-    //    //Stage setting
-    //    gm.weapon = weapon;
-    //    gm.enMax = enMax;
-    //    gm.pMaxHP = pMaxHP;
-    //    gm.enMaxHP = enMaxHP;
-    //}
-
     //주사위를 돌리는 함수
     void RollDice()
     {
+        diceAnim.SetBool("isRoll", true);
         //주사위 값 결정
-        diceImgIdx = Random.Range(0, 6);
-        diceNum = diceImgIdx + 1;
-        diceImg.sprite = diceImgs[diceImgIdx];
+        diceIdx = Random.Range(0, 6);
+        diceNum = diceIdx + 1;
+        Invoke("stopRollAnim", 1.0f);
     }
-
+    void setAnimNum()
+    {
+        switch(diceNum)
+        {
+            case 1:
+                diceAnim.SetInteger("DiceNum", 1);
+                break;
+            case 2:
+                diceAnim.SetInteger("DiceNum", 2);
+                break;
+            case 3:
+                diceAnim.SetInteger("DiceNum", 3);
+                break;
+            case 4:
+                diceAnim.SetInteger("DiceNum", 4);
+                break;
+            case 5:
+                diceAnim.SetInteger("DiceNum", 5);
+                break;
+            case 6:
+                diceAnim.SetInteger("DiceNum", 6);
+                break;
+        }
+    }
     void setValue()
-	{
+    {
         switch (diceNum)
         {
             case 1:
@@ -162,7 +171,7 @@ public class Dice : MonoBehaviour
                 break;
             case Dtype.weapon:
                 gm.weapon = weapon;
-                gm.weapon = diceImgIdx;
+                gm.weapon = diceIdx;
                 break;
             case Dtype.enMaxHP:
                 gm.enMaxHP = enMaxHP;
@@ -190,7 +199,6 @@ public class Dice : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(8.0f);
             if (gm.isGameOver)
             {
                 StopAllCoroutines();
@@ -213,6 +221,13 @@ public class Dice : MonoBehaviour
                     gm.defE = defE * value;
                     break;
             }
+            yield return new WaitForSeconds(5.0f);
         }
+    }
+
+    void stopRollAnim()
+    {
+        setAnimNum();
+        diceAnim.SetBool("isRoll", false);
     }
 }

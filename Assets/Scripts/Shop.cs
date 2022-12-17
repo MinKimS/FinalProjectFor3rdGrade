@@ -93,7 +93,7 @@ public class Shop : MonoBehaviour
     }
     IEnumerator DiceRoll()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
         //주사위 돌리기 성공
         if (gm.diceNum > 2)
         {

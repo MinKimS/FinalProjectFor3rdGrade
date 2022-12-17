@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Setstate();
         curHp = pMaxHP;
         pSpawnPos = new Vector3(0,0.26f,0);
         isEnter = true;
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
             //Àû¼ÒÈ¯
             if (points.Length > 0)
             {
-                StartCoroutine(CreateEnemy(enMax));
+                //StartCoroutine(CreateEnemy(enMax));
             }
         }
 
