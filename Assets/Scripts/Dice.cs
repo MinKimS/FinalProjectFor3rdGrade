@@ -87,6 +87,12 @@ public class Dice : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(gm.isGameClear)
+            StopAllCoroutines();
+    }
+
     void setDiceNum()
     {
         gm.diceNum = diceNum;

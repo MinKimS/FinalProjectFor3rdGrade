@@ -40,15 +40,10 @@ public class GameManager : MonoBehaviour
     public bool isSpawnOk = false;  //스폰체크
     public int enemyCount = 0;
     public int killCount = 0;
-
-    //게임오버창
-    public GameObject gmOverUI;
-    //적 처치 수
-    public int killNum = 0;
-    //소유한 돈
-    public int money = 0;
-    //현재 스테이지
-    public int curStage = 1;
+    
+    public int killNum = 0; //적 처치 수
+    public int money = 0; //소유한 돈
+    public int curStage = 1; //현재 스테이지
 
     //아이템으로 인해 변화되는 능력치
     public float chgAtk = 0; //변화되는 공격력
@@ -58,14 +53,15 @@ public class GameManager : MonoBehaviour
     public int weaponUp = 0; //무기강화횟수
     public float diceNum;   //주사위 값
     private Vector3 pSpawnPos; //플레이어 스폰 위치
+    private bool stageUp = false;
 
+    public GameObject gmOverUI; //게임오버창
+    public GameObject gmClearUI; //게임클리어창
     public GameObject shopUI; //상점UI
     public GameObject pPos; //플레이어
     public GameObject diceUI; //주사위UI
     public Text stage; //스테이지 텍스트
     public GameObject boss; //보스
-    public GameObject ClearUI; //게임 클리어
-    public GameObject OverUI; //게임 오버
     public Text st; //플레이어 능력치
     public GameObject[] spawnPos; //스폰될 위치 표시 오브젝트
     public GameObject[] dices;
@@ -86,8 +82,7 @@ public class GameManager : MonoBehaviour
         pSpawnPos = new Vector3(0,0.26f,0); //플레이어 리스폰 장소
         isEnter = true;
         //적 소환위치 저장
-        points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        //소환표시 저장
+        points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>(); //소환표시 저장
     }
 
     private void Update()
@@ -99,7 +94,7 @@ public class GameManager : MonoBehaviour
             //적소환
             if (points.Length > 0)
             {
-                StartCoroutine(CreateEnemy(enMax));
+                //StartCoroutine(CreateEnemy(enMax));
             }
         }
 
@@ -107,16 +102,24 @@ public class GameManager : MonoBehaviour
         //플레이어, 공격 정지
         if (killCount == enMax)
         {
+            print("test");
             curStage++;
-            if(curStage < 16)
+
+            if (curStage < 16)
+            {
                 Shop();
+            }
             else //게임 클리어
-			{
-
-			}
+            {
+                isGameClear = true;
+                gmClearUI.SetActive(true);
+                StopAllCoroutines();
+            }
         }
+        //보스가 죽은경우
+        //게임클리어(위에있는거 가져오기)
 
-        if(isShop)
+        if (isShop)
         {
             //돈 텍스트 설정
             moneyText.text = "돈 : " + money;

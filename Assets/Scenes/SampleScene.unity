@@ -837,7 +837,6 @@ MonoBehaviour:
   isSpawnOk: 0
   enemyCount: 0
   killCount: 0
-  gmOverUI: {fileID: 267648085}
   killNum: 0
   money: 500
   curStage: 1
@@ -847,13 +846,13 @@ MonoBehaviour:
   recoverHP: 0
   weaponUp: 0
   diceNum: 0
+  gmOverUI: {fileID: 267648085}
+  gmClearUI: {fileID: 2000700649}
   shopUI: {fileID: 1617478353}
   pPos: {fileID: 2058833469}
   diceUI: {fileID: 572496997}
   stage: {fileID: 2098849464}
   boss: {fileID: 6828096244945876388}
-  ClearUI: {fileID: 2000700649}
-  OverUI: {fileID: 267648085}
   st: {fileID: 189011009}
   spawnPos: []
   dices:
@@ -10519,7 +10518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8891257335243178826, guid: 1d9ebc6c4540faf46939557df76dae5e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8891257335243178826, guid: 1d9ebc6c4540faf46939557df76dae5e, type: 3}
       propertyPath: m_TagString
