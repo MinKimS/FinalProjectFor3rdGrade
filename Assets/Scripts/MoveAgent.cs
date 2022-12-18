@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MoveAgent : MonoBehaviour
 {
-    public List<Transform> wayPoints;
+    public List<Transform> wayPoints; //순찰 시 이동할 포인트
     int nextIdx;
 
     //정찰속도
@@ -20,22 +20,26 @@ public class MoveAgent : MonoBehaviour
     //추적대상
     Vector3 traceTarget;
 
+    //순찰 설정
     public void SetPatrolling(bool patrol)
     {
         patrolling = patrol;
-        nma.speed = patrolSpeed;
-        nma.angularSpeed = anSpeed;
+        nma.speed = patrolSpeed; //순찰 속도 설정
+        nma.angularSpeed = anSpeed; //회전 속도 설정
         MoveWayPoint();
     }
+
+    //추적으로 설정
     public void SetTraceTarget(Vector3 pos)
     {
         traceTarget = pos;
-        nma.speed = traceSpeed;
-        nma.angularSpeed = anSpeed;
-        Tracetarget(traceTarget);
+        nma.speed = traceSpeed; //이동속도 설정
+        nma.angularSpeed = anSpeed; //회전속도 설정
+        Tracetarget(traceTarget); //추적 타겟 설정
     }
     void Start()
     {
+        //순찰, 추적 속도 적마다 다르게 설정
         if(gameObject.tag == "Boss")
             patrolSpeed = 1.0f;
         else
@@ -51,6 +55,7 @@ public class MoveAgent : MonoBehaviour
             wayPoints.RemoveAt(0);
             nextIdx = Random.Range(0, wayPoints.Count); //다음 목적지인덱스 랜덤설정
         }
+        //추적 시작
         SetPatrolling(true);
     }
     // 다음 목적지로 이동 함수

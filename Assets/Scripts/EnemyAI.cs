@@ -17,8 +17,8 @@ public class EnemyAI : MonoBehaviour
         TA_CLOSE,
         TA_LONG
     }
-    public Type type;
-    public State state;
+    public Type type; //적의 타입
+    public State state; //적의 상태
     public float attackDist = 1.0f; //공격 사정거리
     public float stopAttackDist = 2.0f; //멈춰서 공격 사정거리
     public bool isDie = false; //사망 여부
@@ -54,8 +54,8 @@ public class EnemyAI : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(CheckState());
-        StartCoroutine(Action());
+        StartCoroutine(CheckState()); //상태체크
+        StartCoroutine(Action()); //행동
     }
 
 
@@ -68,6 +68,7 @@ public class EnemyAI : MonoBehaviour
 
             float dist = Vector3.Distance(playerTr.position, enemyTr.position); //플레이어와의 거리
 
+            //추적을 하는 적이아니면 범위에따라 상태 설정
             if(state != State.PA)
             {
                 if (dist <= stopAttackDist) state = State.STOP_ATTACK;
@@ -89,7 +90,7 @@ public class EnemyAI : MonoBehaviour
             {
                 //순찰하면서 공격
                 case State.PA:
-                    moveAgent.SetPatrolling(true);
+                    moveAgent.SetPatrolling(true); //순찰시작
                     if(type == Type.TA_LONG)
                     {
                         //움직이는 상태로 총알 발사
@@ -162,6 +163,7 @@ public class EnemyAI : MonoBehaviour
     
     void DieEnemy()
     {
+        //보스가 죽으면 게임 클리어 처리
         if (ed.etype == EDamageData.EType.BOSS)
         {
             gm.isGameClear = true;
@@ -182,6 +184,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
+        //게임 클리어 시 모든 적 정지 및 코루틴 정지
         if (gm.isGameClear)
         {
             moveAgent.Stop();

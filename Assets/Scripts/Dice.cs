@@ -82,8 +82,8 @@ public class Dice : MonoBehaviour
         }
         if(dUse == DUse.one) //성공과 실패를 확인할 한개의 주사위
 		{
-            RollDice();
-            SetDiceNum();
+            RollDice(); //주사위 굴리기
+            SetDiceNum(); //주사위 값 설정
         }
     }
 
@@ -114,13 +114,13 @@ public class Dice : MonoBehaviour
     //주사위를 돌리는 함수
     void RollDice()
     {
-        diceAnim.SetBool("isRoll", true);
+        diceAnim.SetBool("isRoll", true); //애니메이션 실행
         gm.isAnim = true;
         ads.PlayOneShot(gm.aClip[1]);
         //주사위 값 결정
         diceIdx = Random.Range(0, 6);
         diceNum = diceIdx + 1;
-        Invoke("stopRollAnim", 1.0f);
+        Invoke("stopRollAnim", 1.0f); //애니메이션 정지
     }
 
     //주사위 애니메이션 설정
@@ -166,7 +166,7 @@ public class Dice : MonoBehaviour
                 value = 0.75f;
                 break;
             case 6:
-                value = 4.0f;
+                value = 2.0f;
                 break;
         }
     }
@@ -174,9 +174,10 @@ public class Dice : MonoBehaviour
     //스테이지 시작시의 주사위
     void RollOneTimeDice()
     {
-        RollDice();
+        RollDice(); //주사위 돌리기
         //state에 영향을 줄 값
         setValue();
+        //값 설정
         switch (dType)
         {
             case Dtype.enMax:
@@ -201,6 +202,7 @@ public class Dice : MonoBehaviour
         //스테이지 이동시 스테이지 설정 주사위가 hide라 안되는 문제
     }
 
+    //주사위 숨기기(한번 굴리는 주사위 용)
     void HideDice()
     {
         gameObject.SetActive(false);
@@ -213,6 +215,7 @@ public class Dice : MonoBehaviour
     {
         while (true)
         {
+            //게임오버시 모든 주사위 코루틴 정지
             if (gm.isGameOver)
             {
                 StopAllCoroutines();
@@ -220,6 +223,8 @@ public class Dice : MonoBehaviour
             RollDice();
             //state에 영향을 줄 값
             setValue();
+
+            //값 지정
             switch (dType)
             {
                 case Dtype.atkP:
@@ -239,11 +244,13 @@ public class Dice : MonoBehaviour
         }
     }
 
+    //애니메이션 정지
     void stopRollAnim()
     {
         SetAnimNum();
         diceAnim.SetBool("isRoll", false);
         gm.isAnim = false;
+        //주사위 결과가 나오는 효과음
         ads.PlayOneShot(gm.aClip[0]);
     }
 }

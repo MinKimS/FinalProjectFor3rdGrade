@@ -85,6 +85,8 @@ public class EnemyFire : MonoBehaviour
 
         Vector3 RandomPosition; //랜덤위치 설정
         GameObject _bullet;
+
+        //적 종류마다 한번에 발사하는 총알 개수가 다름
         for (int i = 0; i < bulletNum; i++)
         {
             RandomPosition = new Vector3(Random.Range(-0.4f, 0.4f), 0f, 0f);
@@ -95,6 +97,7 @@ public class EnemyFire : MonoBehaviour
 
     void SetBullet()
     {
+        //적마다 발사하는 총알 개수 설정
         switch (ed.etype)
         {
             case EDamageData.EType.BISHOP:

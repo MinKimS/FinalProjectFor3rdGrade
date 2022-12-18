@@ -25,11 +25,11 @@ public class GameManager : MonoBehaviour
     int stageUp = 0; //스테이지 상승하면서 올라가는 최대 적 스폰수
 
     //Player setting
-    public float atkP = 1.0f;
-    public float defP = 0.1f;
+    public float atkP = 2.0f;
+    public float defP = 1.0f;
     //Enemy setting
-    public float atkE = 5.0f;
-    public float defE = 0.1f;
+    public float atkE = 1.0f;
+    public float defE = 0.01f;
     //Stage setting
     public int weapon = 0;
     public float enMax = 10.0f;
@@ -75,8 +75,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        ads = GetComponent<AudioSource>();
         Setstate();//초기 능력치 설정
+        ads = GetComponent<AudioSource>();
     }
     void Start()
     {
@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (curHp > pMaxHP) //최대체력 초과 방지
+            curHp = pMaxHP;
         //게임이 시작하면 몹 스폰
         if (!isEnter && isSpawnOk)
         {
@@ -115,27 +117,31 @@ public class GameManager : MonoBehaviour
             }
         }
         //보스가 죽은경우
-        if (isGameClear) //게임 클리어
+        //게임 클리어
+        if (isGameClear) //주사위 숨기기, 모든 코루틴 정지, 게임 클리어 창 띄우기
         {
             gmClearUI.SetActive(true);
             StopAllCoroutines();
             diceUI.SetActive(false);
         }
 
+        //게임오버
         if(isGameOver)
         {
+            //모든 코루틴 정지, 주사위 숨기기
             StopAllCoroutines();
             diceUI.SetActive(false);
         }
 
+        //상점인경우
         if (isShop)
         {
             //돈 텍스트 설정
             moneyText.text = "돈 : " + money;
 
             //상점의 플레이어 능력치 표시
-            st.text = "공격력 : " + (1.0f + chgAtk) + "\n방어: " + (0.1f + chgDef) +
-                "\n무기강화: " + weaponUp + "\n최대체력: " + (200 + chgMaxHp) + "\n현재체력: " + curHp;
+            st.text = "공격력 : " + (2.0f + chgAtk) + "\n방어: " + (1.0f + chgDef) +
+                "\n무기강화: " + weaponUp + "\n최대체력: " + (200 + chgMaxHp);
         }
         else
         {
@@ -159,7 +165,7 @@ public class GameManager : MonoBehaviour
                 yield return new WaitForSeconds(createTime);
                 int idx = Random.Range(1, points.Length); //스폰포인트 인덱스
                 int enmIdx = 0; //적 소환 인덱스
-                //소환될 적 선택
+                //스테이지 타입별 소환될 적 선택
                 switch(sType)
                 {
                     case StageType.chess:
@@ -176,10 +182,10 @@ public class GameManager : MonoBehaviour
                         enmIdx = Random.Range(0, enemys.Length-1);
                         break;
                 }
-                //스폰위치표시 활성화하기
                 yield return new WaitForSeconds(1f);
-                //스폰위치표시 비활성화하기
+                // 적 소환
                 GameObject enmObj = Instantiate(enemys[enmIdx], points[idx].position, points[idx].rotation);
+                //일반카드가 소환될때마다 카드 종류가 달라짐
                 if (enmIdx == 4)
                 {
                     MeshFilter mFilter = enmObj.GetComponent<MeshFilter>();
@@ -197,41 +203,49 @@ public class GameManager : MonoBehaviour
     
     void Shop()
     {
-        ads.clip = BGMs[2];
-        ads.volume = 0.3f;
+        ads.clip = BGMs[2]; //상점 bgm설정
+        ads.volume = 0.3f; //볼륨 조절
         killCount = 0;
         isShop = true;
         diceUI.SetActive(false);
-        shopUI.SetActive(true);
+        Invoke("ShopShow", 0.5f); //상점이 되자마자 구매 클릭 방지
         //상점의 플레이어 능력치 표시
         st.text = "공격력 : " + (atkP + chgAtk) + "\n방어: " + (defP + chgDef) + 
             "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp + chgHp;
         moneyText.text = "돈 : " + money;//돈 텍스트 설정
-        ads.Play();
+        ads.Play(); //bgm실행
     }
 
+    //상점 활성화
+    void ShopShow()
+    {
+        shopUI.SetActive(true);
+    }
+
+    //다음 스테이지로 이동
     public void NextStage()
     {
-        isShop = false;
+        isShop = false;//상점 비활성화
         //플레이어 위치 초기화
         pPos.transform.position = pSpawnPos;
         shopUI.SetActive(false);
         diceUI.SetActive(true);
         //능력치랑 무기 등을 설정
         Setstate();
+        //보스 스테이지 인 경우
         if (curStage == 15)
         {
             ads.clip = BGMs[0];//스테이지 BGM 설정
             ads.volume = 0.4f;
-            stage.text = "BOSS STAGE";
+            stage.text = "BOSS STAGE"; //스테이지 명 보스스테이지로 설정
             sType = StageType.boss;
-            Invoke("SpawnBoss", 3.0f);
+            Invoke("SpawnBoss", 3.0f); //보스스폰
         }
         else
         {
             ads.clip = BGMs[1];//스테이지 BGM 설정
             ads.volume = 0.15f;
-            stage.text = "STAGE " + curStage;
+            stage.text = "STAGE " + curStage; //스테이지 명 설정
 
             //소환될 몹 스테이지별 설정
             if (curStage > 10)
@@ -251,7 +265,7 @@ public class GameManager : MonoBehaviour
             }
         }
         ads.Play();//BGM 플레이
-        ShowDice();
+        ShowDice(); //숨겨놨던 스테이지 주사위 활성화
         isEnter = true; //총변경시 총알도 설정
     }
 
@@ -271,13 +285,21 @@ public class GameManager : MonoBehaviour
     //state 기본 값으로 원상복구
     void Setstate()
     {
-        atkP = 1.0f + chgAtk;
+        atkP = 2.0f + chgAtk;
         defP = 1.0f + chgDef;
-        atkE = 5.0f;
+        atkE = 1.0f;
         defE = 0.1f;
         weapon = 0;
         enMax = 10.0f + stageUp;
         pMaxHP = 200 + chgMaxHp;
+        SetHP();
+        enMaxHP = 100;
+    }
+
+
+    //hp설정 함수
+    void SetHP()
+    {
         if (curHp > pMaxHP || chgHp + curHp > pMaxHP) //최대체력 초과 방지
             curHp = pMaxHP;
         else
@@ -286,6 +308,5 @@ public class GameManager : MonoBehaviour
                 curHp = 1;
             else curHp += chgHp;
         }
-        enMaxHP = 100;
     }
 }

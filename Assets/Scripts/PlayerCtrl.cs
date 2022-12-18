@@ -8,7 +8,7 @@ public class PlayerCtrl : MonoBehaviour
     Vector3 dir;
     public float rotSpeed = 50.0f;//회전 속도
 
-	public GameObject[] weapons = new GameObject[6];
+	public GameObject[] weapons = new GameObject[6]; //무기 프리팹
     int wpIdx = 0;
 	public GameObject stateUI; //능력치 UI
 
@@ -17,6 +17,7 @@ public class PlayerCtrl : MonoBehaviour
     void Start()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+		//마우스 커서 안보이게 설정
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		//무기 저장
@@ -39,8 +40,8 @@ public class PlayerCtrl : MonoBehaviour
 			if (dir.magnitude > 1) dir.Normalize();
 
 			float len = moveSpeed * Time.deltaTime;
-			transform.Translate(dir * len);
-			transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r);
+			transform.Translate(dir * len); //이동
+			transform.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); //회전
 		}
 	}
     void Update()
@@ -60,13 +61,14 @@ public class PlayerCtrl : MonoBehaviour
 			}
 		}
 
-		if(gm.isGameClear || gm.isGameOver)
+		if(gm.isShop || gm.isGameClear || gm.isGameOver)
 			stateUI.SetActive(false);
 
 		//무기 설정
 		SetWeapon();
 
-		if (gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt))
+		//마우스 커서 보이는 경우와 안보이는 경우 설정
+		if (gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt) || gm.isGameClear)
 		{
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

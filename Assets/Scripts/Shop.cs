@@ -32,6 +32,7 @@ public class Shop : MonoBehaviour
     }
     private void OnEnable()
     {
+        //판매할 아이템 설정
         itemIdx = Random.Range(0, items.Length);
         itemImg.sprite = items[itemIdx].itemImg;
         itemName.text = items[itemIdx].itemName;
@@ -63,7 +64,7 @@ public class Shop : MonoBehaviour
             {
                 if (items[i].itemType == Item.ItemType.weapon)
                 {
-                    ColorRed();
+                    ColorRed(); //구매불가 색으로 변경
                 }
             }
         }
@@ -86,13 +87,19 @@ public class Shop : MonoBehaviour
         btn.interactable = true;
         cb.normalColor = Color.white;
         btn.colors = cb;
+        //아이템 이미지 투명도 조정
+        Color color = itemImg.color;
+        color.a = 1.0f;
+        itemImg.color = color;
     }
 
+    //물건 구매
     public void Buy()
     {
         oneDiceUI.SetActive(true);
         StartCoroutine(DiceRoll());
     }
+    //물건 구매를 위한 주사위 굴리기
     IEnumerator DiceRoll()
     {
         yield return new WaitForSeconds(2.0f);
@@ -109,6 +116,7 @@ public class Shop : MonoBehaviour
                 field.SetValue(gm, (float)fieldValue + items[itemIdx].value[i]); //값 변경
                 gm.money -= items[itemIdx].itmePrice;
             }
+            //무기강화 횟수 증가
             if (items[itemIdx].itemType == Item.ItemType.weapon)
             {
                 gm.weaponUp++;
@@ -125,10 +133,11 @@ public class Shop : MonoBehaviour
         Invoke("DiceClose", 1.0f);
     }
 
+    //주사위 패널 닫기
     void DiceClose()
     {
-        sell++;
-        Bought();
+        sell++; //판매횟수 증가
+        Bought(); //구매후 설정 함수
         successText.SetActive(false);
         failText.SetActive(false);
         oneDiceUI.SetActive(false);
@@ -137,14 +146,14 @@ public class Shop : MonoBehaviour
     //구매완료 함수
     void Bought()
     {
-        if (sell == sellLimit)
+        if (sell == sellLimit) //지정된 횟수만큼 구매시 매진 처리
         {
             btn.interactable = false;
             itemImg.sprite = soldoutImg;
             itemName.text = "매진";
             itemDesc.text = "";
         }
-        else
+        else //다음 아이템 설정
         {
             itemIdx = Random.Range(0, items.Length);
             itemImg.sprite = items[itemIdx].itemImg;

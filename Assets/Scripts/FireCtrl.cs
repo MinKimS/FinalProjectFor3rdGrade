@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class FireCtrl : MonoBehaviour
 {
-    //총종류 enum
-    public GameObject bullet;
-    public ParticleSystem cartridge;
-    public Transform firePos;
-    public AudioClip fireSound;
-    public GameObject warningText;
+    public GameObject bullet; //총알 프리팹
+    public ParticleSystem cartridge; //탄피 파티클
+    public Transform firePos; //총알 발사 지점
+    public AudioClip fireSound; //발사 소리
+    public GameObject warningText; //총알 부족 경고 텍스트
 
-    ParticleSystem fireEffect;
-    AudioSource _audio;
+    ParticleSystem fireEffect; //화염 파티클
+    AudioSource _audio; //오디오소스 컴포넌트
 
     // 총쏘는 딜레이
     private bool isFire = false;
@@ -28,13 +27,13 @@ public class FireCtrl : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !gm.isEnter && !gm.isGameOver && !gm.isShop)
+        if (Input.GetMouseButtonDown(0) && !gm.isEnter && !gm.isGameOver && !gm.isGameClear && !gm.isShop)
         {
             //장탄수 0이면 총발사 불가
             if(!isFire && bulletNum > 0)
             {
-                Fire();
-                StartCoroutine(FireCheck());
+                Fire(); //총알발사
+                StartCoroutine(FireCheck());//총 발사 딜레이
             }
         }
         if(gm.isEnter)
@@ -48,13 +47,20 @@ public class FireCtrl : MonoBehaviour
         {
             ChargeBullet();
         }
-        //장탄수 부족 경고
+        //장탄수 부족 경고 출력
         if(bulletNum < 1)
 		{
             warningText.SetActive(true);
         }
+
+        if(gm.isGameClear || gm.isGameOver || gm.isShop)
+        {
+            //장탄수 경고 텍스트 숨기기
+            warningText.SetActive(false);
+        }
     }
 
+    //총알 수 다시 채우기
     void ChargeBullet()
     {
         switch (gm.weapon)
@@ -105,6 +111,7 @@ public class FireCtrl : MonoBehaviour
 
     IEnumerator FireCheck()
     {
+        //총마다 딜레이 설정
         switch(gm.weapon)
         {
             //권총, 리볼버
