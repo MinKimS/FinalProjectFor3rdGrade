@@ -436,6 +436,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isRoll
     m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: DiceNum
+    m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1667680351462934074}
   m_Solo: 0

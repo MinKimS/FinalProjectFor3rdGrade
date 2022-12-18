@@ -18,10 +18,11 @@ public class GameManager : MonoBehaviour
     public Transform[] points; //적 스폰포인트
     public GameObject[] enemys; //소환될 적들
     private float createTime = 1.0f; //적 소환 딜레이 타임
-    private int limitEnemy = 5;   // 너무 많은 적이 소환되지 않도록 방지하기 위한 변수
+    private int limitEnemy = 7;   // 너무 많은 적이 소환되지 않도록 방지하기 위한 변수
     public bool isGameOver = false; //게임오버여부
     public bool isGameClear = false; //게임클리어여부
-    public bool isShop = false;
+    public bool isShop = false; //상점인지 여부
+    int stageUp = 0; //스테이지 상승하면서 올라가는 최대 적 스폰수
 
     //Player setting
     public float atkP = 1.0f;
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
     public float defE = 0.1f;
     //Stage setting
     public int weapon = 0;
-    public float enMax = 4.0f;
+    public float enMax = 10.0f;
     public float pMaxHP = 100;
     public float enMaxHP = 100;
     public float curHp; //플레이어 현재 체력
@@ -61,7 +62,6 @@ public class GameManager : MonoBehaviour
     public GameObject pPos; //플레이어
     public GameObject diceUI; //주사위UI
     public Text stage; //스테이지 텍스트
-    private GameObject boss; //보스
     public Text st; //플레이어 능력치
     public GameObject[] spawnPos; //스폰될 위치 표시 오브젝트
     public GameObject[] dices;
@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
         if (killCount == enMax)
         {
             curStage++;
+            stageUp += 3;
 
             if (curStage < 16)
             {
@@ -126,7 +127,7 @@ public class GameManager : MonoBehaviour
 
             //상점의 플레이어 능력치 표시
             st.text = "공격력 : " + (1.0f + chgAtk) + "\n방어: " + (0.1f + chgDef) +
-                "\n무기강화: " + weaponUp + "\n최대체력: " + (100 + pMaxHP) + "\n현재체력: " + curHp;
+                "\n무기강화: " + weaponUp + "\n최대체력: " + (200 + pMaxHP) + "\n현재체력: " + curHp;
         }
     }
 
@@ -240,7 +241,7 @@ public class GameManager : MonoBehaviour
     //보스소환
     void SpawnBoss()
     {
-        boss = Instantiate(enemys[7], new Vector3(-0.1f, 0, 0.5f), Quaternion.Euler(0, 180, 0));
+        Instantiate(enemys[7], new Vector3(-0.1f, 0, 0.5f), Quaternion.Euler(0, 180, 0));
     }
 
     //숨겨놨던 스테이지 주사위 보이기
@@ -262,8 +263,8 @@ public class GameManager : MonoBehaviour
         defE = 0.1f;
         //Stage setting
         weapon = 0;
-        enMax = 4.0f;
-        pMaxHP = 100 + chgMaxHP;
+        enMax = 10.0f + stageUp;
+        pMaxHP = 200 + chgMaxHP;
         enMaxHP = 100;
     }
 }

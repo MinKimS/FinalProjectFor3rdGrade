@@ -30,9 +30,8 @@ public class Dice : MonoBehaviour
 
     private int diceNum; //주사위 값
     private int diceIdx = 0;
-    Image diceImg; //주사위이미지
     GameManager gm; //state 변수가 있는 클래스
-    public float value;
+    public float value; //주사위 값에 따른 영향을 주는 값
 
     //Player setting
     public float atkP;
@@ -45,13 +44,13 @@ public class Dice : MonoBehaviour
     public float enMax;
     public float pMaxHP;
     public float enMaxHP;
-    private Animator diceAnim;
-    public AudioSource ads;
+    
+    private Animator diceAnim;//주사위 애니메이션
+    public AudioSource ads; //주사위 효과음을 재생할 오디오소스
 
     private void Awake()
     {
         diceAnim = GetComponent<Animator>();
-        diceImg = GetComponent<Image>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         ads = GetComponentInParent<AudioSource>();
     }
@@ -71,29 +70,32 @@ public class Dice : MonoBehaviour
         pMaxHP = gm.pMaxHP;
         enMaxHP = gm.enMaxHP;
 
+        //주사위별로 굴리는 방식 선택
         if (dUse == DUse.enter)
         {
-            RollOneTimeDice();
+            RollOneTimeDice();//한번만 주사위가 돌아감
         }
         if (dUse == DUse.stage)
         {
             //Roll();
-            Invoke("Roll", 3.0f);
+            Invoke("Roll", 3.0f);//일정시간마다 돌아갈 주사위
         }
-        if(dUse == DUse.one)
+        if(dUse == DUse.one) //성공과 실패를 확인할 한개의 주사위
 		{
             RollDice();
-            setDiceNum();
+            SetDiceNum();
         }
     }
 
     private void Update()
     {
+        //게임 클리어시 모든 주사위 정지
         if(gm.isGameClear)
             StopAllCoroutines();
     }
 
-    void setDiceNum()
+    //주사위 숫자 설정
+    void SetDiceNum()
     {
         gm.diceNum = diceNum;
     }
@@ -120,7 +122,9 @@ public class Dice : MonoBehaviour
         diceNum = diceIdx + 1;
         Invoke("stopRollAnim", 1.0f);
     }
-    void setAnimNum()
+
+    //주사위 애니메이션 설정
+    void SetAnimNum()
     {
         switch(diceNum)
         {
@@ -177,7 +181,7 @@ public class Dice : MonoBehaviour
         {
             case Dtype.enMax:
                 gm.enMax = enMax;
-                gm.enMax = enMax * value;
+                gm.enMax = Mathf.Floor(enMax * value);
                 break;
             case Dtype.weapon:
                 gm.weapon = weapon;
@@ -237,7 +241,7 @@ public class Dice : MonoBehaviour
 
     void stopRollAnim()
     {
-        setAnimNum();
+        SetAnimNum();
         diceAnim.SetBool("isRoll", false);
         gm.isAnim = false;
         ads.PlayOneShot(gm.aClip[0]);

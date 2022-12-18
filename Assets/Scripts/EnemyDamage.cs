@@ -37,27 +37,27 @@ public class EnemyDamage : MonoBehaviour
         {
             //권총
             case 0:
-                gDamage = 9;
+                gDamage = 21;
                 break;
             //라이플
             case 1:
-                gDamage = 6;
+                gDamage = 14;
                 break;
             //리볼버
             case 2:
-                gDamage = 12;
+                gDamage = 28;
                 break;
             //샷건
             case 3:
-                gDamage = 24;
+                gDamage = 50;
                 break;
             //SMG
             case 4:
-                gDamage = 3;
+                gDamage = 7;
                 break;
             //스나이퍼
             case 5:
-                gDamage = 15;
+                gDamage = 35;
                 break;
         }
     }
@@ -65,14 +65,21 @@ public class EnemyDamage : MonoBehaviour
     {
         //hp설정
         curHp = defaultMaxHp+gm.enMaxHP;
+        
+        if(gameObject.GetComponent<EDamageData>().etype != EDamageData.EType.BOSS)
+        {
+            //hp ui 설정
+            uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
+            GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
+            hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
+            EnemyHpBar bar = hpBar.GetComponent<EnemyHpBar>();
+            bar.target = gameObject;
+            bar.offset = hpBarOffset;
+        }
+        else
+        {
 
-        //hp ui 설정
-        uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
-        GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
-        hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
-        EnemyHpBar bar = hpBar.GetComponent<EnemyHpBar>();
-        bar.target = gameObject;
-        bar.offset = hpBarOffset;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

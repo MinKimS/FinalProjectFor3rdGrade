@@ -65,7 +65,7 @@ public class FireCtrl : MonoBehaviour
                 break;
             //라이플
             case 1:
-                bulletNum = 30;
+                bulletNum = 13;
                 break;
             //리볼버
             case 2:
@@ -77,7 +77,7 @@ public class FireCtrl : MonoBehaviour
                 break;
             //SMG
             case 4:
-                bulletNum = 13;
+                bulletNum = 30;
                 break;
             //스나이퍼
             case 5:

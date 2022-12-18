@@ -31,21 +31,21 @@ public class Damage : MonoBehaviour
 	{
 		if (other.tag == "EnemyBullet" || other.tag == "Enemy")
 		{
-			if(other.tag == "EnemyBullet") Destroy(other.gameObject);
+			if(other.tag == "EnemyBullet") Destroy(other.gameObject); //총알 제거
 			//데미지
 			float bulletDmg = 0;
 			float contactDmg = 0;
 			if (other.tag == "EnemyBullet")
             {
-				bulletDmg = other.GetComponent<EDamageData>().damage;
-				//gm.curHp -= (gm.atkE + bulletDmg) * (1 - gm.defP);
-				//Debug.Log("Damage = " + bulletDmg + "+" + gm.atkE +"=" + (gm.atkE+bulletDmg));
+				bulletDmg = other.GetComponent<EDamageData>().damage; //총알 데미지
+				gm.curHp -= (gm.atkE + bulletDmg) * (1 - gm.defP); //적의 공격력과 플레이어의 방어력에 맞게 체력 감소
+				Debug.Log("Damage = " + ((gm.atkE + bulletDmg) * (1 - gm.defP)));
 			}
 			else
             {
-				contactDmg = other.GetComponent<EDamageData>().damage;
-				//gm.curHp -= (gm.atkE + contactDmg) * (1 - gm.defP);
-				//Debug.Log("Damage = " + contactDmg + "+" + gm.atkE + "=" + (gm.atkE + contactDmg));
+				contactDmg = other.GetComponent<EDamageData>().damage; //적과 충돌 데미지
+				gm.curHp -= (gm.atkE + contactDmg) * (1 - gm.defP); //적의 공격력과 플레이어의 방어력에 맞게 체력 감소
+				Debug.Log("Damage = " + ((gm.atkE + contactDmg) * (1 - gm.defP)));
 			}
 			//플레이어 사망
 			if (gm.curHp <= 0.0f)
@@ -54,7 +54,7 @@ public class Damage : MonoBehaviour
 			}
 
 			StartCoroutine(ShowBloodScreen());
-			DisplayHpbar();
+			DisplayHpbar(); //hp 설정
 		}
 	}
 
