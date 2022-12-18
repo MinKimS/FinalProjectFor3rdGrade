@@ -33,15 +33,13 @@ public class PlayerCtrl : MonoBehaviour
         {
             weapons[i] = transform.GetChild(2).GetChild(i).gameObject;
         }
-        //기본 무기 들기
-        weapons[wpIdx].SetActive(true);
     }
 	
 	//벽 충돌시 플레이어 떨림방지
     private void FixedUpdate()
     {
 		//플레이어 이동
-		if (!gm.isEnter && !gm.isGameOver && !gm.isShop)
+		if (!gm.isEnter && !gm.isGameOver && !gm.isShop && !gm.isGameClear)
 		{
 			dir.x = Input.GetAxis("Horizontal");
 			dir.z = Input.GetAxis("Vertical");
@@ -60,7 +58,7 @@ public class PlayerCtrl : MonoBehaviour
 			CameraConvert();    //카메라 전환
 
 		//무기 설정
-		if (cam == Camera.TPS)
+		if (cam == Camera.TPS && !gm.isAnim)
 			SetWeapon();
 
         if(gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt))

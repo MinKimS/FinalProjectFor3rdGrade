@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     public int weaponUp = 0; //무기강화횟수
     public float diceNum;   //주사위 값
     private Vector3 pSpawnPos; //플레이어 스폰 위치
-    //private bool stageUp = false;
+    public bool isAnim = false; //애니메이션 작동여부
 
     public GameObject gmOverUI; //게임오버창
     public GameObject gmClearUI; //게임클리어창
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     public GameObject pPos; //플레이어
     public GameObject diceUI; //주사위UI
     public Text stage; //스테이지 텍스트
-    public GameObject boss; //보스
+    private GameObject boss; //보스
     public Text st; //플레이어 능력치
     public GameObject[] spawnPos; //스폰될 위치 표시 오브젝트
     public GameObject[] dices;
@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
     public AudioClip[] BGMs; //배경음악
     public AudioSource ads;
     public AudioClip[] aClip; //효과음
+    public Mesh[] cardMesh;
 
     private void Awake()
     {
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
             //적소환
             if (points.Length > 0)
             {
-                //StartCoroutine(CreateEnemy(enMax));
+                StartCoroutine(CreateEnemy(enMax));
             }
         }
 
@@ -109,15 +110,14 @@ public class GameManager : MonoBehaviour
             {
                 Shop();
             }
-            else //게임 클리어
-            {
-                isGameClear = true;
-                gmClearUI.SetActive(true);
-                StopAllCoroutines();
-            }
         }
         //보스가 죽은경우
-        //게임클리어(위에있는거 가져오기)
+        if (isGameClear) //게임 클리어
+        {
+            gmClearUI.SetActive(true);
+            StopAllCoroutines();
+            diceUI.SetActive(false);
+        }
 
         if (isShop)
         {
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
     //적 생성
     IEnumerator CreateEnemy(float maxSpawn)
     {
-        while (!isGameOver && !isGameClear && maxSpawn > 0)
+        while (!isGameOver && !isGameClear && maxSpawn > 0 && !isEnter)
         {
             //최대소환 가능횟수안에서 일정시간마다 적소환
             if (enemyCount < limitEnemy)
@@ -148,7 +148,10 @@ public class GameManager : MonoBehaviour
                         enmIdx = Random.Range(0, 3);
                         break;
                     case StageType.card:
-                        enmIdx = Random.Range(4, enemys.Length-1);
+                        if (curStage > 8)
+                            enmIdx = Random.Range(4, enemys.Length - 1);
+                        else
+                            enmIdx = 4;
                         break;
                     case StageType.mix:
                     case StageType.boss:
@@ -158,7 +161,12 @@ public class GameManager : MonoBehaviour
                 //스폰위치표시 활성화하기
                 yield return new WaitForSeconds(1f);
                 //스폰위치표시 비활성화하기
-                Instantiate(enemys[enmIdx], points[idx].position, points[idx].rotation);
+                GameObject enmObj = Instantiate(enemys[enmIdx], points[idx].position, points[idx].rotation);
+                if (enmIdx == 4)
+                {
+                    MeshFilter mFilter = enmObj.GetComponent<MeshFilter>();
+                    mFilter.sharedMesh = cardMesh[Random.Range(0, cardMesh.Length)];
+                }
                 enemyCount++;
                 maxSpawn--;
             }
@@ -186,8 +194,6 @@ public class GameManager : MonoBehaviour
 
     public void NextStage()
     {
-        //주사위굴리기
-        //주사위가 통과가능값이상인 경우
         isShop = false;
         //플레이어 위치 초기화
         pPos.transform.position = pSpawnPos;
@@ -201,7 +207,7 @@ public class GameManager : MonoBehaviour
             ads.volume = 0.4f;
             stage.text = "BOSS STAGE";
             sType = StageType.boss;
-            boss.SetActive(true);
+            Invoke("SpawnBoss", 3.0f);
         }
         else
         {
@@ -229,9 +235,12 @@ public class GameManager : MonoBehaviour
         ads.Play();//BGM 플레이
         ShowDice();
         isEnter = true; //총변경시 총알도 설정
-        //아닌경우
-        //실패텍스트 또는 소리 내기
-        //
+    }
+
+    //보스소환
+    void SpawnBoss()
+    {
+        boss = Instantiate(enemys[7], new Vector3(-0.1f, 0, 0.5f), Quaternion.Euler(0, 180, 0));
     }
 
     //숨겨놨던 스테이지 주사위 보이기

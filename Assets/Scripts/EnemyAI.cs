@@ -56,13 +56,8 @@ public class EnemyAI : MonoBehaviour
     {
         StartCoroutine(CheckState());
         StartCoroutine(Action());
-
-        if(type == Type.BOSS)
-		{
-            //일정시간마다 변하기(코루틴)
-            //일정시간마다 범위 공격 발사(코루틴)
-        }
     }
+
 
     IEnumerator CheckState()
     {
@@ -167,6 +162,10 @@ public class EnemyAI : MonoBehaviour
     
     void DieEnemy()
     {
+        if (ed.etype == EDamageData.EType.BOSS)
+        {
+            gm.isGameClear = true;
+        }
         Destroy(this.gameObject);
     }
 
@@ -176,6 +175,16 @@ public class EnemyAI : MonoBehaviour
         if(!isDie)
         {
             moveAgent.Stop(); //움직임 멈춤
+            if (type == Type.TA_LONG || type == Type.BOSS) enemyFire.isFire = false; //공격멈춤
+            StopAllCoroutines();
+        }
+    }
+
+    private void Update()
+    {
+        if (gm.isGameClear)
+        {
+            moveAgent.Stop();
             if (type == Type.TA_LONG || type == Type.BOSS) enemyFire.isFire = false; //공격멈춤
             StopAllCoroutines();
         }

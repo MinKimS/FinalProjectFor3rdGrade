@@ -113,6 +113,7 @@ public class Dice : MonoBehaviour
     void RollDice()
     {
         diceAnim.SetBool("isRoll", true);
+        gm.isAnim = true;
         ads.PlayOneShot(gm.aClip[1]);
         //주사위 값 결정
         diceIdx = Random.Range(0, 6);
@@ -238,6 +239,7 @@ public class Dice : MonoBehaviour
     {
         setAnimNum();
         diceAnim.SetBool("isRoll", false);
+        gm.isAnim = false;
         ads.PlayOneShot(gm.aClip[0]);
     }
 }
