@@ -91,7 +91,9 @@ public class FireCtrl : MonoBehaviour
     //총알 발사
     void Fire()
     {
+        //총알생성
         Instantiate(bullet, firePos.position, firePos.rotation);
+        //총알 발사 이펙트와 효과음 재생
         cartridge.Play();
         fireEffect.Play();
         _audio.PlayOneShot(fireSound, 1.0f);

@@ -272,7 +272,7 @@ public class GameManager : MonoBehaviour
     void Setstate()
     {
         atkP = 1.0f + chgAtk;
-        defP = 0.1f + chgDef;
+        defP = 1.0f + chgDef;
         atkE = 5.0f;
         defE = 0.1f;
         weapon = 0;
