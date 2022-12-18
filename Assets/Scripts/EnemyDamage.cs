@@ -31,7 +31,7 @@ public class EnemyDamage : MonoBehaviour
         yield return null;//다음스테이지될때까지 대기(null 말고 조건그걸로 바꾸기)
     }
 
-    void SetWeaponDamage()//총 데미지 설정
+    void SetWeaponDamage()//총 종류에 따른 데미지 설정
 	{
         switch (gm.weapon)
         {
@@ -64,22 +64,15 @@ public class EnemyDamage : MonoBehaviour
     void SetHpBar()
     {
         //hp설정
-        curHp = defaultMaxHp+gm.enMaxHP;
-        
-        if(gameObject.GetComponent<EDamageData>().etype != EDamageData.EType.BOSS)
-        {
-            //hp ui 설정
-            uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
-            GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
-            hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
-            EnemyHpBar bar = hpBar.GetComponent<EnemyHpBar>();
-            bar.target = gameObject;
-            bar.offset = hpBarOffset;
-        }
-        else
-        {
+        curHp = defaultMaxHp + gm.enMaxHP;
 
-        }
+        //hp ui 설정
+        uiCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
+        GameObject hpBar = Instantiate(hpBarPrefab, uiCanvas.transform);
+        hpBarImage = hpBar.GetComponentsInChildren<Image>()[1];
+        EnemyHpBar bar = hpBar.GetComponent<EnemyHpBar>();
+        bar.target = gameObject;
+        bar.offset = hpBarOffset;
     }
 
     private void OnTriggerEnter(Collider other)

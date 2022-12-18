@@ -49,12 +49,13 @@ public class GameManager : MonoBehaviour
     //아이템으로 인해 변화되는 능력치
     public float chgAtk = 0; //변화되는 공격력
     public float chgDef = 0; //변화되는 방어력
-    public float chgMaxHP = 0; //변화되는 최대체력
-    public float recoverHP = 0; //체력회복되는 수치
+    public float chgMaxHp = 0; //변화되는 최대체력
+    public float chgHp = 0; //체력회복되는 수치
     public int weaponUp = 0; //무기강화횟수
     public float diceNum;   //주사위 값
     private Vector3 pSpawnPos; //플레이어 스폰 위치
     public bool isAnim = false; //애니메이션 작동여부
+    public bool isShowState = false; //능력치 창을 보여주고 있는지 여부
 
     public GameObject gmOverUI; //게임오버창
     public GameObject gmClearUI; //게임클리어창
@@ -62,7 +63,8 @@ public class GameManager : MonoBehaviour
     public GameObject pPos; //플레이어
     public GameObject diceUI; //주사위UI
     public Text stage; //스테이지 텍스트
-    public Text st; //플레이어 능력치
+    public Text st; //상점에서 볼 수 있는 플레이어 능력치
+    public Text st2; //플레이 도중에 확인하기 위한 능력치
     public GameObject[] spawnPos; //스폰될 위치 표시 오브젝트
     public GameObject[] dices;
     public Text moneyText; //돈 텍스트
@@ -120,6 +122,12 @@ public class GameManager : MonoBehaviour
             diceUI.SetActive(false);
         }
 
+        if(isGameOver)
+        {
+            StopAllCoroutines();
+            diceUI.SetActive(false);
+        }
+
         if (isShop)
         {
             //돈 텍스트 설정
@@ -127,7 +135,16 @@ public class GameManager : MonoBehaviour
 
             //상점의 플레이어 능력치 표시
             st.text = "공격력 : " + (1.0f + chgAtk) + "\n방어: " + (0.1f + chgDef) +
-                "\n무기강화: " + weaponUp + "\n최대체력: " + (200 + pMaxHP) + "\n현재체력: " + curHp;
+                "\n무기강화: " + weaponUp + "\n최대체력: " + (200 + chgMaxHp) + "\n현재체력: " + curHp;
+        }
+        else
+        {
+            //플레이도중 플레이어 능력치 표시
+            if (isShowState)
+            {
+                st2.text = "공격력 : " + atkP + "\n방어: " + defP +
+                    "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp;
+            }
         }
     }
 
@@ -188,7 +205,7 @@ public class GameManager : MonoBehaviour
         shopUI.SetActive(true);
         //상점의 플레이어 능력치 표시
         st.text = "공격력 : " + (atkP + chgAtk) + "\n방어: " + (defP + chgDef) + 
-            "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp;
+            "\n무기강화: " + weaponUp + "\n최대체력: " + pMaxHP + "\n현재체력: " + curHp + chgHp;
         moneyText.text = "돈 : " + money;//돈 텍스트 설정
         ads.Play();
     }
@@ -254,17 +271,21 @@ public class GameManager : MonoBehaviour
     //state 기본 값으로 원상복구
     void Setstate()
     {
-        //Player setting
         atkP = 1.0f + chgAtk;
         defP = 0.1f + chgDef;
-        curHp += recoverHP;
-        //Enemy setting
         atkE = 5.0f;
         defE = 0.1f;
-        //Stage setting
         weapon = 0;
         enMax = 10.0f + stageUp;
-        pMaxHP = 200 + chgMaxHP;
+        pMaxHP = 200 + chgMaxHp;
+        if (curHp > pMaxHP || chgHp + curHp > pMaxHP) //최대체력 초과 방지
+            curHp = pMaxHP;
+        else
+        {
+            if (curHp + curHp < 0) //아이템으로 인한 체력 0 되는 것 방지
+                curHp = 1;
+            else curHp += chgHp;
+        }
         enMaxHP = 100;
     }
 }

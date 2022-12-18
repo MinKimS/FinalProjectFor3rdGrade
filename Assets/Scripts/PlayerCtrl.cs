@@ -4,22 +4,13 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-	public enum Camera
-	{
-		TPS,
-		FPS
-	}
-	public float moveSpeed = 2.0f;
+	public float moveSpeed = 2.0f; //이동 속도
     Vector3 dir;
-    public float rotSpeed = 50.0f;
-
-	//카메라
-	public GameObject tCam;
-	public GameObject fCam;
-	Camera cam = Camera.TPS;
+    public float rotSpeed = 50.0f;//회전 속도
 
 	public GameObject[] weapons = new GameObject[6];
     int wpIdx = 0;
+	public GameObject stateUI; //능력치 UI
 
     GameManager gm;
 
@@ -31,9 +22,9 @@ public class PlayerCtrl : MonoBehaviour
 		//무기 저장
 		for (int i = 0; i < 6; i++)
         {
-            weapons[i] = transform.GetChild(2).GetChild(i).gameObject;
-        }
-    }
+            weapons[i] = transform.GetChild(1).GetChild(i).gameObject;
+		}
+	}
 	
 	//벽 충돌시 플레이어 떨림방지
     private void FixedUpdate()
@@ -54,14 +45,28 @@ public class PlayerCtrl : MonoBehaviour
 	}
     void Update()
 	{
-		if (!gm.isEnter && !gm.isGameOver && !gm.isShop)
-			CameraConvert();    //카메라 전환
+		//설명창 키고 끄기
+		if(Input.GetKeyDown(KeyCode.Q) && !gm.isShop && !gm.isGameOver && !gm.isGameClear)
+        {
+			if(gm.isShowState)
+            {
+				gm.isShowState = false;
+				stateUI.SetActive(false);
+			}
+			else
+            {
+				gm.isShowState = true;
+				stateUI.SetActive(true);
+			}
+		}
+
+		if(gm.isGameClear || gm.isGameOver)
+			stateUI.SetActive(false);
 
 		//무기 설정
-		if (cam == Camera.TPS && !gm.isAnim)
-			SetWeapon();
+		SetWeapon();
 
-        if(gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt))
+		if (gm.isShop || gm.isGameOver || Input.GetKey(KeyCode.LeftAlt))
 		{
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -81,39 +86,4 @@ public class PlayerCtrl : MonoBehaviour
         wpIdx = gm.weapon;
         weapons[wpIdx].SetActive(true);
     }
-
-
-	//인칭 전환
-	void CameraConvert()
-	{
-		if (Input.GetKeyDown(KeyCode.Tab))
-		{
-			if (cam == Camera.TPS)
-			{
-				FPSCamera();
-				cam = Camera.FPS;
-			}
-			else
-			{
-				TPSCamera();
-				cam = Camera.TPS;
-			}
-		}
-	}
-
-	//카메라 3인칭설정
-	void TPSCamera()
-	{
-		tCam.SetActive(true);
-		fCam.SetActive(false);
-		weapons[wpIdx].SetActive(true);
-	}
-
-	//카메라 1인칭설정
-	void FPSCamera()
-	{
-		tCam.SetActive(false);
-		fCam.SetActive(true);
-		weapons[wpIdx].SetActive(false);
-	}
 }

@@ -153,11 +153,11 @@ public class Dice : MonoBehaviour
         switch (diceNum)
         {
             case 1:
-                value = 0.5f;
+                value = 0.1f;
                 break;
             case 2:
             case 5:
-                value = 1.5f;
+                value = 0.5f;
                 break;
             case 3:
                 value = 1.0f;
@@ -166,7 +166,7 @@ public class Dice : MonoBehaviour
                 value = 0.75f;
                 break;
             case 6:
-                value = 2.0f;
+                value = 4.0f;
                 break;
         }
     }

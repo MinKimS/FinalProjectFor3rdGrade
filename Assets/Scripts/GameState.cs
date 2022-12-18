@@ -49,7 +49,7 @@ public class GameState : MonoBehaviour
         {
             successText.SetActive(true);
             yield return new WaitForSeconds(0.5f);
-            SceneManager.LoadScene("sampleScene");
+            LoadSceneManager.LoadScene("sampleScene");
         }
         else
         {
@@ -67,7 +67,7 @@ public class GameState : MonoBehaviour
         {
             successText.SetActive(true);
             yield return new WaitForSeconds(0.5f);
-            SceneManager.LoadScene("Title");
+            LoadSceneManager.LoadScene("Title");
         }
         else
         {

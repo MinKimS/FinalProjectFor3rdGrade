@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EDamageData : MonoBehaviour
 {
-    public float damage = 20.0f; //기본 공격력
+    public float damage = 20.0f; //기본 공격력(적 종류마다 다르게 설정함)
     public enum EType
     {
         PAWN,
@@ -16,5 +16,5 @@ public class EDamageData : MonoBehaviour
         CARD,
         BOSS
     }
-    public EType etype;
+    public EType etype; //적 종류
 }

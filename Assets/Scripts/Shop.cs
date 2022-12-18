@@ -52,7 +52,7 @@ public class Shop : MonoBehaviour
     private void Update()
     {
         //돈 부족시 구매불가
-        if(gm.money < items[itemIdx].itmePrice)
+        if(gm.money < items[itemIdx].itmePrice && (gm.money - items[itemIdx].itmePrice) < 0)
         {
             ColorRed();
         }

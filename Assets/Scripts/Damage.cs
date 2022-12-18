@@ -19,14 +19,7 @@ public class Damage : MonoBehaviour
 		hpBar.color = initColor;
 		curColor = initColor;
     }
-  //  private void Update()
-  //  {
-		////MaxHp ¼³Á¤
-		//if(gm.isEnter)
-		//{
-		//	curHp = gm.pMaxHP;
-		//}
-  //  }
+
     private void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "EnemyBullet" || other.tag == "Enemy")

@@ -13,6 +13,7 @@ public class Title : MonoBehaviour
     private int diceIdx = 0; //주사위인덱스
     private AudioSource audioSource;
     public AudioClip[] clip;
+    public GameObject exUI; //게임방법창
 
     void Start()
     {
@@ -38,11 +39,16 @@ public class Title : MonoBehaviour
             audioSource.PlayOneShot(clip[1]);
             yield return new WaitForSeconds(1.0f);
             if(i == 0)
-                SceneManager.LoadScene("SampleScene");
-            else
+                LoadSceneManager.LoadScene("SampleScene");
+            else if(i == 1)
             {
                 print("exit");
                 Application.Quit();
+            }
+            else
+            {
+                successText.SetActive(false);
+                exUI.SetActive(true);
             }
         }
         else
@@ -65,5 +71,16 @@ public class Title : MonoBehaviour
     {
         audioSource.PlayOneShot(clip[0]);
         rollDice(1);
+    }
+
+    public void GameEx()
+    {
+        audioSource.PlayOneShot(clip[0]);
+        rollDice(2);
+    }
+
+    public void Close()
+    {
+        exUI.SetActive(false);
     }
 }

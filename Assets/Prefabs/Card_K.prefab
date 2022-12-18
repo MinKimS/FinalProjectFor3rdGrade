@@ -264,7 +264,7 @@ MonoBehaviour:
   defaultMaxHp: 10000
   curHp: 100
   hpBarPrefab: {fileID: 5716181843595146107, guid: 9c80d7a946e57e94aa33b424082cfc9f, type: 3}
-  hpBarOffset: {x: 0, y: 0.6, z: 0}
+  hpBarOffset: {x: 0, y: -0.6, z: 0}
   gDamage: 1
 --- !u!114 &8621436295565908070
 MonoBehaviour:

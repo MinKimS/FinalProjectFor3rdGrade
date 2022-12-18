@@ -133,25 +133,25 @@ public class EnemyAI : MonoBehaviour
                     switch(ed.etype)
                     {
                         case EDamageData.EType.PAWN:
-                            gm.money += 3;
+                            gm.money += 30;
                             break;
                         case EDamageData.EType.KNIGHT:
-                            gm.money += 5;
+                            gm.money += 50;
                             break;
                         case EDamageData.EType.BISHOP:
-                            gm.money += 6;
+                            gm.money += 60;
                             break;
                         case EDamageData.EType.ROOK:
-                            gm.money += 7;
+                            gm.money += 70;
                             break;
                         case EDamageData.EType.CARD:
-                            gm.money += 10;
+                            gm.money += 100;
                             break;
                         case EDamageData.EType.QCARD:
-                            gm.money += 20;
+                            gm.money += 200;
                             break;
                         case EDamageData.EType.JCARD:
-                            gm.money += 30;
+                            gm.money += 300;
                             break;
                     }
                     Invoke("DieEnemy", 1.0f); //1초후 적 삭제
